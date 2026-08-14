@@ -44,9 +44,12 @@ Getting them inconsistent across pages is the most common defect on this site.
 | Middle | Class 6 – Class 8 | `middle` |
 | Secondary | Class 9 – Class 10 | `secondary` |
 
+Confirmed with the school: all four stages exist, and Pre-Primary runs
+Pre-School → Pre-KG → LKG → UKG in that order before Class 1.
+
 Write "Class 1", not "Class-1", "class 1", "Grade 1", or "1st Standard".
-Write "Pre-KG", not "Pre KG" or "PreKG". Confirm the exact set of stages with
-the school before publishing — some schools merge Pre-School and Pre-KG.
+Write "Pre-KG", not "Pre KG" or "PreKG". Write "LKG" and "UKG" uppercase and
+unpunctuated, never "L.K.G." or "Lower KG".
 
 ## Page skeleton
 

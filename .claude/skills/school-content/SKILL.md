@@ -45,8 +45,14 @@ qualifications, transport routes, and safety certifications.
 ## Terminology
 
 Use the grade labels from the `school-page` skill exactly: Pre-School, Pre-KG,
-LKG, UKG, Class 1 … Class 10. Never "Grade", never "Standard", never
-"Class-1" with a hyphen.
+LKG, UKG, Class 1 … Class 10, grouped as Pre-Primary / Primary / Middle /
+Secondary. Never "Grade", never "Standard", never "Class-1" with a hyphen,
+never "Lower KG" or "L.K.G.".
+
+Age-appropriate copy tracks the four stages, and within Pre-Primary the four
+years are genuinely different: Pre-School and Pre-KG are about settling in and
+separation; LKG and UKG are about early literacy and numeracy and readiness for
+Class 1. Do not let one paragraph serve all four.
 
 Other consistent choices — pick once, apply everywhere:
 

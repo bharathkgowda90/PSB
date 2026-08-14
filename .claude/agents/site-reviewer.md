@@ -15,9 +15,12 @@ Check each page for:
 
 1. **Shell drift** — header, nav, and footer must match `site/_partials/`
    byte for byte. Diff them; report any page that has drifted.
-2. **Grade taxonomy** — "Class 1" … "Class 10", "Pre-School", "Pre-KG", "LKG",
-   "UKG". Flag "Class-1", "Grade 3", "1st Standard", "Pre KG", and any other
-   variant. This is the most frequent defect on this site.
+2. **Grade taxonomy** — the four stages are Pre-Primary (Pre-School, Pre-KG,
+   LKG, UKG), Primary (Class 1–5), Middle (Class 6–8), Secondary (Class 9–10).
+   Flag "Class-1", "Grade 3", "1st Standard", "Pre KG", "PreKG", "L.K.G.",
+   "Lower KG", "Upper KG", and any other variant. Also flag a grade placed in
+   the wrong stage, or a stage page whose listed grades don't match the table
+   in the `school-page` skill. This is the most frequent defect on this site.
 3. **Unresolved placeholders** — `TODO`, `Lorem`, `[to confirm]`,
    `example.edu`, `localhost`, staging hostnames.
 4. **Head completeness** — unique non-duplicate `<title>` and description,
