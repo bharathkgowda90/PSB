@@ -23,8 +23,11 @@ true.
     school-assets/   image pipeline, responsive markup, child-photo privacy
     school-seo/      titles, structured data, sitemap, local search
     publish-site/    pre-flight checklist, build, and teardown
+    <13 more>       vendored design skills from leonxlnx/taste-skill (MIT)
   agents/
     site-reviewer.md review agent for shell drift, taxonomy, privacy, a11y
+  vendor/
+    taste-skill/     licence + provenance for the vendored design skills
   tools/             the npm toolchain
     package.json
     scripts/         optimize-images.mjs, check.mjs, build.mjs
@@ -72,3 +75,10 @@ dist/                build output, generated
 
 This layout is provisional until the site plan is agreed; the tooling paths in
 `tools/package.json` and `tools/scripts/` need updating together if it changes.
+
+## Skill precedence
+
+The `school-*` skills are authoritative for this project. The vendored
+`taste-skill` design skills are advisory — useful for visual direction, but
+overruled wherever they conflict with the static-HTML stack, WCAG 2.1 AA, the
+copy rules, or the performance budgets. See `vendor/taste-skill/README.md`.
