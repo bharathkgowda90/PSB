@@ -13,7 +13,8 @@
     "images": "node scripts/optimize-images.mjs",
     "check": "node scripts/build-pages.mjs && npm run --silent format && node scripts/check.mjs",
     "build": "node scripts/build-pages.mjs && npm run --silent format && node scripts/build.mjs",
-    "pages": "node scripts/build-pages.mjs"
+    "pages": "node scripts/build-pages.mjs",
+    "preview": "node scripts/build-preview.mjs"
   },
   "devDependencies": {
     "esbuild": "^0.25.0",
