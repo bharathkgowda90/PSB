@@ -34,6 +34,8 @@ Viewports: **390px** (the phone most of this audience actually holds), **768px**
 |---|---|---|
 | `overflow-page` | error | The page scrolls sideways. Always a bug. |
 | `overflow-element` | error/warn | An element pokes past the viewport edge. |
+| `broken-image` | error | An image 404s. Renders as a placeholder icon that every other check happily measures as fine. |
+| `text-collision` | error | Two pieces of text overlap — usually absolute positioning meeting content that grew. |
 | `image-stretch` | error | Rendered aspect ratio differs from the file's — the photo is squashed. |
 | `contrast` | error | Text below WCAG AA against its actual painted background. |
 | `header-overlap` | error | The `h1` sits under the fixed header. |
@@ -68,6 +70,15 @@ already handled and are the pattern to follow:
 
 If you find yourself mentally filtering the output, tighten the check.
 
+Two traps the collision check had to learn, both worth knowing before adding
+any geometry check:
+
+- **A wrapped inline element's `getBoundingClientRect()` is the union box
+  across all its lines**, so it overlaps its neighbours by construction. Only
+  the per-line boxes from `getClientRects()` mean anything.
+- **Chromium still lays out the content of a closed `<details>`**, so every
+  collapsed FAQ answer reports a real, overlapping rect. They are skipped.
+
 ## What it does not check
 
 Automation cannot see these. They still need a person:
@@ -78,6 +89,8 @@ Automation cannot see these. They still need a person:
 - Real device rendering. Chromium at 390px is not an actual budget Android.
 - Keyboard order and screen-reader flow beyond structural checks.
 - Whether motion feels right, or merely runs.
+- Whether a floating element sitting over content *reads* as intentional.
+  Geometrically the header is fine; whether it looks fine is a human call.
 
 So report QA results as "0 errors, 0 warnings from `npm run qa`", never as
 "the design is verified".

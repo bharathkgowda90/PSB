@@ -164,6 +164,61 @@ const collect = function (LIMITS) {
       );
   });
 
+  /* 3b. Broken images. A 404 renders as the browser's placeholder icon, which
+        the earlier checks happily measure as a perfectly fine element. This is
+        the single most visible defect a visitor can hit, and it was missed. */
+  document.querySelectorAll("img").forEach((img) => {
+    if (img.complete && img.naturalWidth === 0)
+      add("error", "broken-image", `failed to load: ${img.getAttribute("src") || "(srcset only)"}`, img);
+  });
+
+  /* 3c. Overlapping text. Absolute positioning and competing flex distribution
+        collide as soon as content grows, and the result is unreadable.
+
+        Two traps, both learned the hard way:
+        - A wrapped inline element's getBoundingClientRect() is the union box
+          across all its lines, which overlaps its neighbours by construction.
+          Per-line boxes from getClientRects() are the only meaningful compare.
+        - Chromium still lays out the content of a closed <details>, so every
+          collapsed FAQ answer reports a real, overlapping rect. Skip them. */
+  const boxes = [];
+  document.querySelectorAll("h1, h2, h3, h4, p, span, a, li, strong").forEach((el) => {
+    if (el.querySelector("h1, h2, h3, h4, p, span, a, li")) return;
+    const t = (el.textContent || "").trim();
+    if (!t) return;
+    const cs = getComputedStyle(el);
+    if (cs.display === "none" || cs.visibility === "hidden" || cs.opacity === "0") return;
+    if (parkedOffscreen(el)) return;
+    if (el.closest("details:not([open])")) return;
+    for (const r of el.getClientRects()) {
+      if (r.width >= 4 && r.height >= 4) boxes.push({ el, r, t });
+    }
+  });
+
+  const reported = new Set();
+  for (let i = 0; i < boxes.length; i += 1) {
+    for (let j = i + 1; j < boxes.length; j += 1) {
+      const a = boxes[i];
+      const bx = boxes[j];
+      if (a.el === bx.el || a.el.contains(bx.el) || bx.el.contains(a.el)) continue;
+      const ox = Math.min(a.r.right, bx.r.right) - Math.max(a.r.left, bx.r.left);
+      const oy = Math.min(a.r.bottom, bx.r.bottom) - Math.max(a.r.top, bx.r.top);
+      // Require a substantial 2-D overlap, not a shared edge or a descender
+      // grazing the line below.
+      if (ox > 6 && oy > 6) {
+        const key = a.t.slice(0, 20) + "|" + bx.t.slice(0, 20);
+        if (reported.has(key)) continue;
+        reported.add(key);
+        add(
+          "error",
+          "text-collision",
+          `"${a.t.slice(0, 22)}" overlaps "${bx.t.slice(0, 22)}" by ${Math.round(ox)}×${Math.round(oy)}px`,
+          a.el,
+        );
+      }
+    }
+  }
+
   /* 4. Stretched images — rendered aspect ratio differing from the natural
         one means the picture is squashed. */
   document.querySelectorAll("img").forEach((img) => {
@@ -192,12 +247,14 @@ const collect = function (LIMITS) {
     const hb = header.getBoundingClientRect();
     const main = document.getElementById("main");
     if (main) {
-      const first = main.querySelector("h1");
-      if (first) {
-        const fr = first.getBoundingClientRect();
-        if (fr.top < hb.bottom && fr.bottom > hb.top)
-          add("error", "header-overlap", "the h1 sits under the fixed header", first);
-      }
+      // At rest, no text should start underneath the floating header.
+      main.querySelectorAll("h1, h2, h3, p").forEach((el) => {
+        const t = (el.textContent || "").trim();
+        if (!t) return;
+        const fr = el.getBoundingClientRect();
+        if (fr.top < hb.bottom && fr.bottom > hb.top && fr.top >= 0)
+          add("error", "header-overlap", `"${t.slice(0, 30)}" sits under the fixed header`, el);
+      });
     }
   }
 

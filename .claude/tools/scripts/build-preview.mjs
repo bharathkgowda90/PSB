@@ -67,24 +67,37 @@ const navPanel = home.match(/<nav class="primary-nav"[\s\S]*?<\/nav>/)[0];
 // ------------------------------------------------------------- inline assets
 
 const assets = new Map();
-for (const [rel, mime] of [
-  ["assets/fonts/instrument-serif-latin.woff2", "font/woff2"],
-  ["assets/fonts/instrument-serif-latin-ext.woff2", "font/woff2"],
-  ["assets/fonts/lexend-latin.woff2", "font/woff2"],
-  ["assets/fonts/lexend-latin-ext.woff2", "font/woff2"],
-  ["assets/img/logo.svg", "image/svg+xml"],
-  ["assets/img/hero-480.webp", "image/webp"],
-  ["assets/img/hero-960.webp", "image/webp"],
-  ["assets/img/hero-1600.webp", "image/webp"],
-  ["assets/img/hero-960.jpg", "image/jpeg"],
-]) {
-  const file = path.join(DIST, rel);
-  if (existsSync(file)) assets.set("/" + rel, await dataUri(file, mime));
+
+/* Inline EVERY font and image the site ships, discovered by walking dist/
+   rather than listed by hand. A hardcoded list silently misses whatever was
+   added since it was written — which is exactly how the prop, pillar, marquee
+   and split photographs ended up as broken-image icons in the preview. */
+const MIME = {
+  ".woff2": "font/woff2",
+  ".svg": "image/svg+xml",
+  ".webp": "image/webp",
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".png": "image/png",
+  ".avif": "image/avif",
+};
+
+for (const dir of ["assets/fonts", "assets/img"]) {
+  const abs = path.join(DIST, dir);
+  if (!existsSync(abs)) continue;
+  for await (const file of walk(abs)) {
+    const mime = MIME[path.extname(file).toLowerCase()];
+    if (!mime) continue;
+    const rel = "/" + path.relative(DIST, file).split(path.sep).join("/");
+    assets.set(rel, await dataUri(file, mime));
+  }
 }
+
+const assetsByLength = [...assets.entries()].sort((a, b) => b[0].length - a[0].length);
 
 const inlineAssets = (html) => {
   let out = html;
-  for (const [route, uri] of assets) out = out.split(route).join(uri);
+  for (const [route, uri] of assetsByLength) out = out.split(route).join(uri);
   return out;
 };
 
