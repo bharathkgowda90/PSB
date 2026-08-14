@@ -137,6 +137,34 @@
 
     document.documentElement.classList.add("js-carousel");
 
+    var viewport = root.querySelector(".testimonial__viewport");
+
+    /* Reserve the height of the tallest quote so stepping never jumps the page,
+       and never leaves dead space either. Guessing a fixed min-height in CSS
+       does one or the other depending on the copy. */
+    function fitHeight() {
+      if (!viewport) return;
+      viewport.style.minHeight = "";
+      var tallest = 0;
+      slides.forEach(function (s) {
+        var wasHidden = s.hasAttribute("hidden");
+        if (wasHidden) s.removeAttribute("hidden");
+        tallest = Math.max(tallest, s.getBoundingClientRect().height);
+        if (wasHidden) s.setAttribute("hidden", "");
+      });
+      // box-sizing is border-box, so min-height must include the viewport's own
+      // vertical padding or it floors below the real content height.
+      var cs = getComputedStyle(viewport);
+      var pad = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
+      viewport.style.minHeight = Math.ceil(tallest + pad) + "px";
+    }
+
+    var resizeTimer;
+    window.addEventListener("resize", function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(fitHeight, 150);
+    });
+
     function show(i) {
       index = (i + slides.length) % slides.length;
       slides.forEach(function (s, n) {
@@ -168,6 +196,9 @@
     });
 
     show(0);
+    fitHeight();
+    // Images arrive after first paint and change the measurement.
+    window.addEventListener("load", fitHeight);
   });
 
   /* ----------------------------------------------------------- Map facade

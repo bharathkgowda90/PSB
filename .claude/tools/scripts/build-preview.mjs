@@ -124,6 +124,17 @@ for (const rel of [
 
 // ------------------------------------------------------------------- emit
 
+const leftover = new Set();
+for (const html of [shellHeader, shellFooter, ...pages.map((p) => p.main)]) {
+  for (const m of html.matchAll(/\/assets\/[^"')\s,]+/g)) leftover.add(m[0]);
+}
+if (leftover.size) {
+  console.error(`\nReferenced but not inlined -- these would render broken in the preview:`);
+  for (const a of leftover) console.error(`  ${a}`);
+  console.error("Usually a missing responsive size. Check site/assets/img/ and the markup.");
+  process.exit(1);
+}
+
 const payload = JSON.stringify(
   Object.fromEntries(pages.map((p) => [p.route, { title: p.title, main: p.main }])),
 );

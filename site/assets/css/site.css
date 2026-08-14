@@ -221,6 +221,19 @@ img {
   height: auto;
 }
 
+picture {
+  display: block;
+}
+
+/* Slots that crop with object-fit need the picture to carry the box height. */
+.testimonial__portrait picture,
+.pillar__media picture,
+.prop-row__media picture,
+.split__media picture,
+.card > picture {
+  height: 100%;
+}
+
 strong {
   font-weight: 600;
 }
@@ -1051,23 +1064,38 @@ main > .hero:first-child {
 .testimonial__slide {
   display: grid;
   margin: 0;
-  gap: var(--gutter);
-  grid-template-columns: 1fr;
+
+  /* Phone: the quote leads, then a small portrait beside the attribution --
+     the arrangement the reference uses at this width. */
+  align-items: center;
+  column-gap: 1.25rem;
+  grid-template-areas:
+    "quote quote"
+    "portrait person";
+  grid-template-columns: 6rem minmax(0, 1fr);
+  row-gap: 2rem;
 }
 
 @media (width >= 48rem) {
   .testimonial__slide {
+    /* Desktop: portrait on the left spanning both rows, quote and attribution
+       stacked to its right. */
     align-items: start;
-    gap: clamp(1.5rem, 5vw, 5rem);
+    column-gap: clamp(1.5rem, 5vw, 5rem);
+    grid-template-areas:
+      "portrait quote"
+      "portrait person";
     grid-template-columns: 16rem minmax(0, 1fr);
+    row-gap: 1.5rem;
   }
 }
 
 .testimonial__portrait {
   overflow: hidden;
-  width: min(100%, 16rem);
+  width: 100%;
   aspect-ratio: 2 / 3;
   background: var(--wash);
+  grid-area: portrait;
 }
 
 .testimonial__portrait img {
@@ -1077,25 +1105,26 @@ main > .hero:first-child {
 
 .testimonial__quote {
   margin: 0;
-  padding-top: 2rem;
+  grid-area: quote;
 }
 
 .testimonial__mark {
   display: block;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
   font-family: var(--font-display);
   font-size: var(--fs-heading);
   line-height: 1;
 }
 
 .testimonial__quote p {
+  margin: 0;
   max-width: 46ch;
   font-size: clamp(1.05rem, 1.6vw, 1.35rem);
   line-height: 1.5;
 }
 
-.testimonial__quote footer {
-  margin-top: 2rem;
+.testimonial__person {
+  grid-area: person;
 }
 
 .testimonial__name {
@@ -1123,9 +1152,16 @@ main > .hero:first-child {
 }
 
 .testimonial__progress {
-  flex: 1;
+  display: none;
   height: 3rem;
   background: var(--wash);
+}
+
+@media (width >= 48rem) {
+  .testimonial__progress {
+    display: block;
+    flex: 1;
+  }
 }
 
 .testimonial__progress span {
@@ -1138,8 +1174,8 @@ main > .hero:first-child {
 
 .testimonial__btn {
   display: grid;
-  width: 3.75rem;
-  min-height: 44px;
+  flex: 1;
+  min-height: 3.5rem;
   border: 0;
   border-left: var(--hairline);
   background: transparent;
@@ -1154,17 +1190,17 @@ main > .hero:first-child {
   color: var(--paper);
 }
 
+@media (width >= 48rem) {
+  .testimonial__btn {
+    width: 3.75rem;
+    flex: 0 0 3.75rem;
+  }
+}
+
 /* Only once the script confirms it is running does the viewport become a
    single-slide window. */
 .js-carousel .testimonial__viewport {
   position: relative;
-  min-height: 26rem;
-}
-
-@media (width <= 48rem) {
-  .js-carousel .testimonial__viewport {
-    min-height: 34rem;
-  }
 }
 
 .js-carousel .testimonial__slide[hidden] {
