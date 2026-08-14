@@ -106,6 +106,7 @@ will keep it current, or delete the page and its nav links.
 - [ ] HTTPS enabled and HTTP redirecting to it
 - [ ] `www` and non-`www` resolve, one redirecting to the other
 - [ ] `npm run check` passes
+- [ ] `npm run qa` passes (design QA: responsiveness, spacing, contrast, tap targets)
 - [ ] `npm run build` and deploy **`dist/` only**
 - [ ] Google Business Profile claimed; name, address and phone match the site character for character
 - [ ] Sitemap submitted in Google Search Console
@@ -116,19 +117,37 @@ will keep it current, or delete the page and its nav links.
 
 ## 7. Already verified
 
-These were checked during the build and need no further work:
+Checked during the build; no further work needed.
 
-- All 25 pages generate, with no broken internal links
-- HTML validity and the WCAG rule set pass on every page
-- CSS lint and formatting pass
-- No horizontal overflow at 390px, 1280px, or full-page desktop
-- Keyboard: skip link is the first tab stop; the mobile menu opens, closes on
-  Escape, and returns focus to its button
-- Hero button contrast fixed after a visual check caught blue-on-dark-blue
-- Homepage payload is ~37 KB total (HTML + CSS + JS + hero), against a 1 MB budget
-- `dist/` excludes build inputs (`_layout`, `_pages`) and photo originals (`_raw`)
-- No `.claude/` references in the built output
+**Automated, re-runnable**
+- `npm run check` — HTML validity, the WCAG rule set, CSS lint and formatting,
+  clean on all 25 pages
+- `npm run qa` — design QA across 25 pages × 3 viewports (390 / 768 / 1440):
+  **0 errors, 0 warnings**. Covers page and element overflow, stretched images,
+  colour contrast against actual painted backgrounds, header overlap, font
+  loading, tap targets, image dimensions, line length, grid alignment and
+  section-padding rhythm.
+- The QA checker was itself negative-tested: planted overflow, low-contrast
+  text, a stretched image and undersized buttons were all detected.
 
-Note that contrast was verified on the hero specifically. A full contrast audit
-across every component pairing has not been done, and should be once real
-photographs are in place behind text.
+**Manual**
+- Keyboard: skip link is the first tab stop; the menu opens, closes on Escape,
+  and returns focus to its button
+- Rendered and inspected at 390px, 768px and 1440px
+- Content stays visible with `site.js` blocked — no page depends on JavaScript
+- `dist/` excludes build inputs (`_layout`, `_pages`) and photo originals
+  (`_raw`); no `.claude/` references in the output
+
+**Fixed along the way**
+- 113px horizontal overflow at 390px — the 12-column grid never collapsed
+- Reveal animations hid content by default, so a failed `site.js` would have
+  left pages blank
+- Three tap targets below 44px: card links, the checkbox row, the header phone
+  link
+- Ghost buttons were blue-on-dark-blue on the old hero
+
+**Still needs a person.** Automation cannot judge whether the design is *good*,
+whether a photograph is well chosen, how it renders on a real budget Android
+over mobile data, or screen-reader flow beyond structure. Re-run `npm run qa`
+once real photographs replace the placeholders — images behind text are the
+most likely source of new contrast failures.

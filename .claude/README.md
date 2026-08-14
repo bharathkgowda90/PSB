@@ -22,6 +22,7 @@ true.
     school-a11y/     WCAG 2.1 AA checks and the site's a11y patterns
     school-assets/   image pipeline, responsive markup, child-photo privacy
     school-seo/      titles, structured data, sitemap, local search
+    design-qa/       fit-and-finish checks across pages and breakpoints
     publish-site/    pre-flight checklist, build, and teardown
     <13 more>       vendored design skills from leonxlnx/taste-skill (MIT)
   agents/
@@ -45,6 +46,7 @@ true.
 | `lightningcss` | CSS minification at build time |
 | `esbuild` | JS minification at build time |
 | `serve` | Local static preview server |
+| `playwright-core` | Drives Chromium for the design-QA pass |
 
 All development dependencies. Zero of them ship to the browser — the site is
 plain static HTML, CSS, and JS with no runtime framework.
@@ -58,6 +60,7 @@ npm install         # restore node_modules
 npm run pages       # regenerate site pages from _layout + _pages
 npm run dev         # preview the site at http://localhost:3000
 npm run check       # regenerate, format, then HTML + WCAG + CSS gates
+npm run qa          # design QA: responsiveness, spacing, contrast, tap targets
 npm run format      # auto-fix formatting
 npm run images      # generate responsive WebP/JPEG from site/assets/img/_raw/
 npm run build       # produce dist/, minified, with a .claude/ leak check

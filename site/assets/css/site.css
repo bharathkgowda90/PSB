@@ -494,6 +494,12 @@ strong {
   pointer-events: auto;
 }
 
+.nav-actions > a:not(.btn) {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+}
+
 @media (width >= 62rem) {
   .nav-actions {
     display: flex;
@@ -1043,6 +1049,9 @@ main > .hero:first-child {
 }
 
 .card__link {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: flex-end;
   margin-top: auto;
   padding-top: 1.25rem;
   font-size: var(--fs-fine);
@@ -1325,7 +1334,8 @@ tbody th {
 
 .field--check {
   display: flex;
-  align-items: flex-start;
+  min-height: 44px;
+  align-items: center;
   gap: 0.6rem;
 }
 
