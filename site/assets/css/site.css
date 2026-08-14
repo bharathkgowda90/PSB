@@ -1134,6 +1134,16 @@ main > .hero:first-child {
   background: var(--paper);
 }
 
+.card > picture {
+  display: block;
+  margin: -1.5rem -1.5rem 1.25rem;
+}
+
+.card > picture img {
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+
 .card h3 {
   margin-bottom: 0.5rem;
 }

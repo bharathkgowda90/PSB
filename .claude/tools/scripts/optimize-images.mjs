@@ -29,7 +29,7 @@ const WIDTHS = flag("widths", "480,960,1600")
   .map((w) => Number(w.trim()))
   .filter(Boolean);
 const QUALITY = Number(flag("quality", "78"));
-const EXTS = new Set([".jpg", ".jpeg", ".png", ".webp", ".tif", ".tiff"]);
+const EXTS = new Set([".jpg", ".jpeg", ".png", ".webp", ".avif", ".tif", ".tiff"]);
 
 async function* walk(dir) {
   for (const entry of await readdir(dir, { withFileTypes: true })) {
@@ -76,6 +76,17 @@ for await (const file of walk(SRC)) {
     );
   }
   processed += 1;
+}
+
+const skipped = [];
+for await (const file of walk(SRC)) {
+  const base = path.basename(file, path.extname(file));
+  const any = WIDTHS.some((w) => existsSync(path.join(OUT, path.dirname(path.relative(SRC, file)), `${base}-${w}.webp`)));
+  if (!any) skipped.push(path.relative(SRC, file));
+}
+if (skipped.length) {
+  console.warn(`\nNo variants produced for ${skipped.length} source(s) - too small for any target width:`);
+  for (const s of skipped) console.warn(`  ${s}`);
 }
 
 if (processed === 0) {
