@@ -1027,7 +1027,7 @@ main > .hero:first-child {
 
 .testimonial {
   position: relative;
-  padding-block: var(--section-pad) 0;
+  padding-block: 0;
 }
 
 .testimonial__bleed {
@@ -1040,16 +1040,9 @@ main > .hero:first-child {
   background: var(--green);
 }
 
-.testimonial__notice {
-  max-width: 90rem;
-  margin-inline: auto;
-  margin-block: 0 2rem;
-  margin-left: clamp(2rem, 12vw, 18rem);
-  margin-right: var(--gutter);
-}
-
 .testimonial__viewport {
   max-width: 90rem;
+  padding-block: var(--section-pad);
   margin-inline: auto;
   padding-left: clamp(2rem, 12vw, 18rem);
   padding-right: var(--gutter);
@@ -1064,17 +1057,17 @@ main > .hero:first-child {
 
 @media (width >= 48rem) {
   .testimonial__slide {
-    gap: clamp(1.5rem, 5vw, 4rem);
-    grid-template-columns: 18rem minmax(0, 1fr);
+    align-items: start;
+    gap: clamp(1.5rem, 5vw, 5rem);
+    grid-template-columns: 16rem minmax(0, 1fr);
   }
 }
 
 .testimonial__portrait {
   overflow: hidden;
-  width: min(100%, 18rem);
+  width: min(100%, 16rem);
   aspect-ratio: 2 / 3;
   background: var(--wash);
-  grid-row: span 2;
 }
 
 .testimonial__portrait img {
@@ -1084,7 +1077,7 @@ main > .hero:first-child {
 
 .testimonial__quote {
   margin: 0;
-  align-self: center;
+  padding-top: 2rem;
 }
 
 .testimonial__mark {
@@ -1101,8 +1094,8 @@ main > .hero:first-child {
   line-height: 1.5;
 }
 
-.testimonial__slide figcaption {
-  align-self: start;
+.testimonial__quote footer {
+  margin-top: 2rem;
 }
 
 .testimonial__name {
@@ -1165,6 +1158,13 @@ main > .hero:first-child {
    single-slide window. */
 .js-carousel .testimonial__viewport {
   position: relative;
+  min-height: 26rem;
+}
+
+@media (width <= 48rem) {
+  .js-carousel .testimonial__viewport {
+    min-height: 34rem;
+  }
 }
 
 .js-carousel .testimonial__slide[hidden] {
