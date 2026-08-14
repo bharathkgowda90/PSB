@@ -743,12 +743,15 @@ main {
 }
 
 .hero__media {
-  padding-inline: var(--gutter);
+  display: block;
+  width: 100%;
+  padding: 0;
+  line-height: 0;
 }
 
 .hero__media img {
-  max-width: 90rem;
-  margin-inline: auto;
+  width: 100%;
+  max-width: none;
   aspect-ratio: 16 / 9;
   object-fit: cover;
 }
