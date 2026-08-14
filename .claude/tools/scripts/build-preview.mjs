@@ -67,6 +67,8 @@ const footer = home.match(/<footer class="site-footer">[\s\S]*?<\/footer>/)[0];
 
 const assets = new Map();
 for (const [rel, mime] of [
+  ["assets/fonts/lexend-latin.woff2", "font/woff2"],
+  ["assets/fonts/lexend-latin-ext.woff2", "font/woff2"],
   ["assets/img/logo.svg", "image/svg+xml"],
   ["assets/img/hero-480.webp", "image/webp"],
   ["assets/img/hero-960.webp", "image/webp"],
@@ -87,6 +89,18 @@ const shellHeader = inlineAssets(header);
 const shellFooter = inlineAssets(footer);
 for (const page of pages) page.main = inlineAssets(page.main);
 
+// The stylesheet's @font-face rules point at font files by path. A single-file
+// preview has no such paths, so swap them for the inlined data URIs too --
+// otherwise the preview silently falls back to a system font and misrepresents
+// the typography, which is the whole point of the review.
+const inlinedCss = inlineAssets(css);
+for (const rel of ["/assets/fonts/lexend-latin.woff2", "/assets/fonts/lexend-latin-ext.woff2"]) {
+  if (assets.has(rel) && inlinedCss.includes(rel)) {
+    console.error(`font not inlined into CSS: ${rel}`);
+    process.exit(1);
+  }
+}
+
 // ------------------------------------------------------------------- emit
 
 const payload = JSON.stringify(
@@ -100,7 +114,7 @@ const doc = `<!doctype html>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Prashanth High School of Brilliance</title>
     <style>
-${css}
+${inlinedCss}
       /* Preview-only chrome, not part of the real site. */
       .preview-bar {
         position: sticky;

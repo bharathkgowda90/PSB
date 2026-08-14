@@ -6,6 +6,39 @@
    backgrounds and accents only, never for text.
    ========================================================================== */
 
+/* Lexend, self-hosted rather than loaded from Google Fonts. Self-hosting means
+   no third-party request, no data sent to Google on every page view, and one
+   fewer DNS + TLS handshake on a weak rural connection.
+
+   One variable file covers weights 100-900. The unicode-range split means a
+   browser only downloads latin-ext if the page actually uses those characters.
+
+   Lexend has no Kannada glyphs, so the stack below falls through to a Kannada
+   font for Kannada text. */
+
+@font-face {
+  font-family: lexend;
+  font-style: normal;
+  font-weight: 100 900;
+  src: url("/assets/fonts/lexend-latin.woff2") format("woff2");
+  font-display: swap;
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: lexend;
+  font-style: normal;
+  font-weight: 100 900;
+  src: url("/assets/fonts/lexend-latin-ext.woff2") format("woff2");
+  font-display: swap;
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+    U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+    U+A720-A7FF;
+}
+
 :root {
   /* Brand */
   --blue: #14357f;
@@ -28,7 +61,7 @@
 
   /* Type */
   --font:
-    "Segoe UI", system-ui, -apple-system, "Noto Sans", "Noto Sans Kannada", roboto, arial,
+    lexend, "Segoe UI", system-ui, -apple-system, "Noto Sans Kannada", "Noto Sans", roboto, arial,
     sans-serif;
   --step--1: clamp(0.86rem, 0.83rem + 0.15vw, 0.94rem);
   --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.09rem);
