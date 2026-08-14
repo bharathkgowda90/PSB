@@ -1230,6 +1230,24 @@ main > .hero:first-child {
   font-weight: 400;
 }
 
+.crest-block {
+  display: grid;
+  align-items: center;
+  margin-block: 2rem;
+  gap: var(--gutter);
+  grid-template-columns: 1fr;
+}
+
+.crest-block img {
+  width: min(100%, 14rem);
+}
+
+@media (width >= 48rem) {
+  .crest-block {
+    grid-template-columns: 14rem minmax(0, 1fr);
+  }
+}
+
 /* -----------------------------------------------------------------------------
    17. TABLES
    -------------------------------------------------------------------------- */
@@ -1540,6 +1558,12 @@ tbody th {
 
 .site-footer__wordmark span {
   color: var(--blue);
+}
+
+.site-footer__crest {
+  width: 7rem;
+  height: auto;
+  margin-bottom: 1rem;
 }
 
 .site-footer__brand {

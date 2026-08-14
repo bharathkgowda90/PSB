@@ -20,7 +20,7 @@ grep -rn "To be supplied\|To be confirmed\|TODO\|SAMPLE DATA" site/_pages site/_
 | 3 | **Register a domain and set the real origin** | `site/_layout/site.config.json`, `site/robots.txt`, `site/sitemap.xml` | Currently `https://TODO-domain-not-yet-registered.example`. Canonical tags, Open Graph URLs and the sitemap are all wrong until this is set. |
 | 4 | **Connect the enquiry form** | `site/_pages/enquiry.html` | The form has `action="#"` and goes nowhere. Every enquiry sent through it is silently lost. See §4. |
 | 5 | **Confirm the email address** | throughout | `psb@gmail.com` is almost certainly not a real inbox — that address would have been registered years ago. Verify it or replace it. |
-| 6 | **Real photographs, with consent** | `site/assets/img/_raw/` | Only a generated placeholder exists. No photograph of an identifiable child may be published without written consent from that child's family. |
+| 6 | **Real photographs, with consent** | `site/assets/img/_raw/` | Only generated placeholders exist. No photograph of an identifiable child may be published without written consent from that child's family. See the note below on the supplied image set. |
 | 7 | **Verify the recognition number** | `site/_pages/disclosure.html`, footer | `29220204201` is published as fact on the disclosure page. Confirm it is correct and current. |
 
 ---
@@ -48,6 +48,37 @@ Roughly 40 marked gaps remain. In priority order:
 - Academic calendar dates (`calendar.html`)
 - Sports, clubs and events actually offered (`student-life.html`)
 - Fee inclusions, payment methods, instalments, concessions (`fees.html`)
+
+---
+
+## 2b. On the supplied image set
+
+A zip of 106 images was supplied for use as site photography. 104 of them are
+Primer's own assets, identifiable by the Webflow CDN hash prefixes and
+filenames (`102825-NEWKID-PRIMER-*`, `campus-*`, `tesimonial-img-*`), and the
+reference sheet they came from states plainly that they are **not licensed for
+reuse**.
+
+They were not used, for two reasons that are independent of each other:
+
+1. **Licensing.** They are another company's commercial photography.
+2. **They are photographs of identifiable children who do not attend this
+   school.** Publishing them here tells a parent in Maddur that these are this
+   school's children, classrooms and campus. That is the "stock photography of
+   unrelated children" failure this project rejected at the planning stage, and
+   it is worse than a visible placeholder because it is not recoverable once a
+   family notices.
+
+Two files from the set were usable and are now in place:
+
+- `psb-logo.png` — the school's actual crest. Optimised and now used as the
+  favicon, the Apple touch icon, the social-share card, in the footer, and on
+  the About page.
+- `image_51.jpg` — a 1×1 tracking pixel, discarded.
+
+The photography brief in `docs/website-plan.md` §7 still stands: roughly 60–80
+photographs of this school, shot on a working day, with written media consent
+confirmed per identifiable child.
 
 ---
 
