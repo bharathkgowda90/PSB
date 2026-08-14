@@ -62,11 +62,14 @@ const home = await readFile(path.join(DIST, "index.html"), "utf8");
 const css = await readFile(path.join(DIST, "assets/css/site.css"), "utf8");
 const header = home.match(/<header class="site-header">[\s\S]*?<\/header>/)[0];
 const footer = home.match(/<footer class="site-footer">[\s\S]*?<\/footer>/)[0];
+const navPanel = home.match(/<nav class="primary-nav"[\s\S]*?<\/nav>/)[0];
 
 // ------------------------------------------------------------- inline assets
 
 const assets = new Map();
 for (const [rel, mime] of [
+  ["assets/fonts/instrument-serif-latin.woff2", "font/woff2"],
+  ["assets/fonts/instrument-serif-latin-ext.woff2", "font/woff2"],
   ["assets/fonts/lexend-latin.woff2", "font/woff2"],
   ["assets/fonts/lexend-latin-ext.woff2", "font/woff2"],
   ["assets/img/logo.svg", "image/svg+xml"],
@@ -85,7 +88,7 @@ const inlineAssets = (html) => {
   return out;
 };
 
-const shellHeader = inlineAssets(header);
+const shellHeader = inlineAssets(header) + "\n    " + inlineAssets(navPanel);
 const shellFooter = inlineAssets(footer);
 for (const page of pages) page.main = inlineAssets(page.main);
 
@@ -94,7 +97,12 @@ for (const page of pages) page.main = inlineAssets(page.main);
 // otherwise the preview silently falls back to a system font and misrepresents
 // the typography, which is the whole point of the review.
 const inlinedCss = inlineAssets(css);
-for (const rel of ["/assets/fonts/lexend-latin.woff2", "/assets/fonts/lexend-latin-ext.woff2"]) {
+for (const rel of [
+  "/assets/fonts/instrument-serif-latin.woff2",
+  "/assets/fonts/instrument-serif-latin-ext.woff2",
+  "/assets/fonts/lexend-latin.woff2",
+  "/assets/fonts/lexend-latin-ext.woff2",
+]) {
   if (assets.has(rel) && inlinedCss.includes(rel)) {
     console.error(`font not inlined into CSS: ${rel}`);
     process.exit(1);

@@ -27,6 +27,14 @@
       content="https://TODO-domain-not-yet-registered.example/assets/img/og-default.png"
     />
     <meta property="og:locale" content="en_IN" />
+    <meta name="theme-color" content="#ffffff" />
+    <link
+      rel="preload"
+      href="/assets/fonts/instrument-serif-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
     <link
       rel="preload"
       href="/assets/fonts/lexend-latin.woff2"
@@ -41,33 +49,49 @@
     <a class="skip-link" href="#main">Skip to main content</a>
 
     <header class="site-header">
-      <div class="wrap site-header__inner">
-        <a class="brand" href="/">
-          <img class="brand__mark" src="/assets/img/logo.svg" width="52" height="52" alt="" />
-          <span class="brand__text">
-            <span class="brand__name">Prashanth High School of Brilliance</span>
-            <span class="brand__place">K.M. Doddi (Bharathinagar), Maddur</span>
+      <div class="site-header__inner">
+        <div class="nav-box">
+          <a class="brand" href="/">Prashanth<span aria-hidden="true">.</span></a>
+
+          <span class="nav-mark" aria-hidden="true">
+            <span></span>
+            <span class="c-y"></span>
+            <span></span>
+            <span class="c-o"></span>
+            <span class="c-b"></span>
+            <span class="c-b"></span>
           </span>
-        </a>
 
-        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">
-          <span class="nav-toggle__bars" aria-hidden="true"></span>
-          <span class="visually-hidden">Menu</span>
-        </button>
+          <button
+            class="nav-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="primary-nav"
+          >
+            <span class="nav-toggle__bars" aria-hidden="true"></span>
+            <span class="visually-hidden">Menu</span>
+          </button>
+        </div>
 
-        <nav class="primary-nav" id="primary-nav" aria-label="Main">
-          <ul class="primary-nav__list">
-            <li><a href="/about/">About</a></li>
-            <li><a href="/academics/" aria-current="page">Academics</a></li>
-            <li><a href="/admissions/">Admissions</a></li>
-            <li><a href="/campus/">Campus</a></li>
-            <li><a href="/student-life/">Student Life</a></li>
-            <li><a href="/contact/">Contact</a></li>
-          </ul>
-          <a class="btn btn--accent primary-nav__cta" href="/admissions/enquiry/">Enquire</a>
-        </nav>
+        <div class="nav-actions">
+          <a href="tel:+918232298195">082322&nbsp;98195</a>
+          <a class="btn btn--solid" href="/admissions/enquiry/">Enquire</a>
+        </div>
       </div>
     </header>
+
+    <nav class="primary-nav" id="primary-nav" aria-label="Main">
+      <ul class="primary-nav__list">
+        <li><a href="/about/">About</a></li>
+        <li><a href="/academics/" aria-current="page">Academics</a></li>
+        <li><a href="/admissions/">Admissions</a></li>
+        <li><a href="/campus/">Campus</a></li>
+        <li><a href="/student-life/">Student Life</a></li>
+        <li><a href="/faculty/">Teachers</a></li>
+        <li><a href="/news/">News</a></li>
+        <li><a href="/contact/">Contact</a></li>
+      </ul>
+    </nav>
 
     <main id="main">
       <nav class="breadcrumbs" aria-label="Breadcrumb">
@@ -194,30 +218,30 @@
 
     <footer class="site-footer">
       <div class="wrap site-footer__grid">
-        <div class="site-footer__col">
-          <p class="site-footer__brand">Prashanth High School of Brilliance</p>
-          <p class="site-footer__muted">
-            English medium, Pre-School to Class 10. Karnataka State Board. Established 2002.
+        <p class="site-footer__wordmark">Prashanth<span aria-hidden="true">.</span></p>
+
+        <div>
+          <h2 class="site-footer__head">The school</h2>
+          <p class="site-footer__brand">
+            Prashanth High School of Brilliance. English medium, Pre-School to Class 10, Karnataka
+            State Board. Established 2002, run by Snehanjali Rural Education Society (R.)
           </p>
-          <p class="site-footer__muted">Run by Snehanjali Rural Education Society (R.)</p>
         </div>
 
-        <div class="site-footer__col">
-          <h2 class="site-footer__head">Quick links</h2>
+        <div>
+          <h2 class="site-footer__head">Explore</h2>
           <ul class="site-footer__list">
             <li><a href="/admissions/">Admissions</a></li>
             <li><a href="/admissions/fees/">Fees</a></li>
             <li><a href="/academics/results/">Results</a></li>
             <li><a href="/campus/transport/">Bus routes</a></li>
             <li><a href="/news/calendar/">Academic calendar</a></li>
-            <li><a href="/faculty/">Our teachers</a></li>
-            <li><a href="/news/">News &amp; circulars</a></li>
             <li><a href="/gallery/">Photo gallery</a></li>
           </ul>
         </div>
 
-        <div class="site-footer__col">
-          <h2 class="site-footer__head">Contact</h2>
+        <div>
+          <h2 class="site-footer__head">Visit</h2>
           <address class="site-footer__address">
             K.M. Doddi (Bharathinagar)<br />
             Maddur - Malavalli Road, SH-33<br />
@@ -228,14 +252,12 @@
             <li><a href="tel:+918232298195">082322&nbsp;98195</a></li>
             <li><a href="mailto:psb@gmail.com">psb@gmail.com</a></li>
             <li>
-              <a href="https://maps.app.goo.gl/huiRP8kwPaQ6HvJR7" rel="noopener">
-                Directions on Google Maps
-              </a>
+              <a href="https://maps.app.goo.gl/huiRP8kwPaQ6HvJR7" rel="noopener">Google Maps</a>
             </li>
           </ul>
         </div>
 
-        <div class="site-footer__col">
+        <div>
           <h2 class="site-footer__head">School information</h2>
           <ul class="site-footer__list">
             <li><a href="/disclosure/">Mandatory disclosure</a></li>

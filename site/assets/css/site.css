@@ -1,20 +1,48 @@
-/* ==========================================================================
-   Prashanth High School of Brilliance
-   Palette derived from the school crest. Every text/background pair below
-   is checked against WCAG 2.1 AA (4.5:1 body, 3:1 large text and UI).
-   Crest yellow fails as a text colour on white, so it is used for
-   backgrounds and accents only, never for text.
+/* =============================================================================
+   Prashanth High School of Brilliance — design system
+
+   Structure follows the Primer.com system supplied as reference: a fluid root,
+   a 12-column grid with hairline rules, black type on white paper, flat colour
+   used structurally rather than as type colour, full-pill buttons in exactly
+   two variants, and an exposed Mondrian grid motif that bookends the page.
+
+   Reimplemented from scratch rather than copied. Two deliberate departures are
+   marked DEVIATION below, both for the same reason: this site is read on
+   mid-range Android phones over patchy rural 4G, by parents and grandparents,
+   and has to clear WCAG 2.1 AA.
    ========================================================================== */
 
-/* Lexend, self-hosted rather than loaded from Google Fonts. Self-hosting means
-   no third-party request, no data sent to Google on every page view, and one
-   fewer DNS + TLS handshake on a weak rural connection.
+/* -----------------------------------------------------------------------------
+   1. FONTS — self-hosted, no third-party request on any page view.
 
-   One variable file covers weights 100-900. The unicode-range split means a
-   browser only downloads latin-ext if the page actually uses those characters.
+   Instrument Serif stands in for Primer's licensed Sirca: a high-contrast
+   display serif that ships in a single 400 weight, matching the reference's
+   "book weight throughout, no bold anywhere in display type".
+   Lexend carries all running text in place of Söhne.
+   -------------------------------------------------------------------------- */
 
-   Lexend has no Kannada glyphs, so the stack below falls through to a Kannada
-   font for Kannada text. */
+@font-face {
+  font-family: "Instrument Serif";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/assets/fonts/instrument-serif-latin.woff2") format("woff2");
+  font-display: swap;
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Instrument Serif";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/assets/fonts/instrument-serif-latin-ext.woff2") format("woff2");
+  font-display: swap;
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+    U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+    U+A720-A7FF;
+}
 
 @font-face {
   font-family: lexend;
@@ -39,45 +67,79 @@
     U+A720-A7FF;
 }
 
-:root {
-  /* Brand */
-  --blue: #14357f;
-  --blue-dark: #0e2559;
-  --blue-tint: #eef2fb;
-  --red: #b5271b;
-  --red-tint: #fdf0ee;
-  --yellow: #ffc72c;
-  --yellow-tint: #fff8e6;
-  --green: #4b7f22;
-  --green-tint: #f0f7e9;
+/* -----------------------------------------------------------------------------
+   2. FLUID ROOT
 
-  /* Neutrals */
-  --ink: #1f2328;
-  --ink-muted: #565f6b;
-  --line: #dfe3ea;
-  --line-strong: #c3c9d4;
-  --bg: #fff;
-  --bg-alt: #f6f7f9;
+   The reference scales the whole layout from one root value (100vw / 90), so
+   everything is expressed in rem and grows continuously instead of stepping at
+   breakpoints. That behaviour is kept.
 
-  /* Type */
-  --font:
-    lexend, "Segoe UI", system-ui, -apple-system, "Noto Sans Kannada", "Noto Sans", roboto, arial,
-    sans-serif;
-  --step--1: clamp(0.86rem, 0.83rem + 0.15vw, 0.94rem);
-  --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.09rem);
-  --step-1: clamp(1.2rem, 1.12rem + 0.4vw, 1.4rem);
-  --step-2: clamp(1.45rem, 1.3rem + 0.75vw, 1.85rem);
-  --step-3: clamp(1.75rem, 1.5rem + 1.25vw, 2.4rem);
-  --step-4: clamp(2.05rem, 1.65rem + 2vw, 3.1rem);
+   DEVIATION 1 — the reference sets `html { font-size: 1.1111vw }`. A pure vw
+   root discards the reader's own browser font-size setting completely, which
+   fails WCAG 2.1 AA (1.4.4 Resize Text) and matters here: a grandparent who
+   has enlarged their default text would see no change at all. Anchoring the
+   clamp in rem keeps the fluid scaling while honouring that setting. The cap
+   (1.05rem ≈ 16.8px) lands display type within a pixel or two of the
+   reference at desktop widths.
+   -------------------------------------------------------------------------- */
 
-  /* Space */
-  --gap: 1rem;
-  --gap-lg: 2rem;
-  --section: clamp(2.5rem, 6vw, 4.5rem);
-  --radius: 10px;
-  --shadow: 0 1px 2px rgb(20 53 127 / 8%), 0 4px 12px rgb(20 53 127 / 6%);
-  --wrap: 1140px;
+html {
+  font-size: clamp(1rem, 0.9rem + 0.35vw, 1.05rem);
+  -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
 }
+
+/* -----------------------------------------------------------------------------
+   3. TOKENS
+   -------------------------------------------------------------------------- */
+
+:root {
+  /* Colour. Seven values, no gradients, no tints. The four accents are flat
+     structural blocks only — never type colour, never a background behind
+     body text. Black on white does all the communicating. */
+  --ink: #000;
+  --paper: #fff;
+  --yellow: #fed933;
+  --blue: #377ef0;
+  --orange: #fe6d2e;
+  --green: #00ad6f;
+  --rule: rgb(0 0 0 / 10%);
+  --wash: #f6f5f2;
+
+  /* Type — two families, five steps, exactly as the reference. */
+  --font-display: "Instrument Serif", georgia, "Times New Roman", serif;
+  --font-text: lexend, "Segoe UI", system-ui, "Noto Sans Kannada", arial, sans-serif;
+  --fs-display: 3.5rem;
+  --fs-title: 2.5rem;
+  --fs-heading: 1.75rem;
+  --fs-body: 1rem;
+  --fs-fine: 0.8rem;
+  --lh-tight: 1.2;
+  --lh-body: 1.55;
+  --lh-fine: 1.5;
+  --tracking: -0.01em;
+
+  /* Layout */
+  --gutter: 1.875rem;
+  --col-gap: 1.25rem;
+  --row-gap: 16px;
+  --columns: 12;
+  --section-pad: clamp(3rem, 7vw, 6.5rem);
+  --nav-h: 4.0625rem;
+
+  /* Shape */
+  --pill: 9999px;
+  --hairline: 1px solid var(--ink);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --dur-fast: 0.25s;
+  --dur-slow: 0.8s;
+}
+
+/* -----------------------------------------------------------------------------
+   4. BASE
+   -------------------------------------------------------------------------- */
 
 *,
 *::before,
@@ -85,48 +147,54 @@
   box-sizing: border-box;
 }
 
-html {
-  scroll-behavior: smooth;
-  -webkit-text-size-adjust: 100%;
-}
-
 body {
   margin: 0;
-  background: var(--bg);
+  background: var(--paper);
   color: var(--ink);
-  font-family: var(--font);
-  font-size: var(--step-0);
-  line-height: 1.65;
+  font-family: var(--font-text);
+  font-size: var(--fs-body);
+  letter-spacing: var(--tracking);
+  line-height: var(--lh-body);
 }
 
 h1,
 h2,
 h3,
 h4 {
-  margin: 0 0 0.5em;
-  color: var(--blue-dark);
-  font-weight: 700;
-  line-height: 1.2;
+  margin: 0 0 0.4em;
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: var(--lh-tight);
   text-wrap: balance;
 }
 
 h1 {
-  font-size: var(--step-4);
+  font-size: var(--fs-title);
 }
 
 h2 {
-  font-size: var(--step-3);
+  font-size: var(--fs-display);
 }
 
 h3 {
-  font-size: var(--step-2);
+  font-size: var(--fs-heading);
 }
 
 h4 {
-  font-size: var(--step-1);
+  font-size: 1.25rem;
 }
 
-p,
+p {
+  margin: 0 0 1rem;
+
+  /* DEVIATION 2 — the reference caps paragraphs at 32ch, which suits a few
+     lines of marketing copy. This site has real explanatory passages for
+     parents, so 62ch keeps a comfortable measure without forcing a column
+     that narrow. */
+  max-width: 62ch;
+}
+
 ul,
 ol,
 dl,
@@ -134,52 +202,50 @@ table {
   margin: 0 0 1rem;
 }
 
-p {
-  max-width: 70ch;
-}
-
 a {
-  color: var(--blue);
-  text-underline-offset: 0.18em;
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  transition: color var(--dur-fast) ease;
 }
 
 a:hover {
-  color: var(--red);
+  color: var(--blue);
 }
 
 img {
-  max-width: 100%;
+  display: block;
+  width: 100%;
   height: auto;
 }
 
-hr {
-  height: 1px;
-  margin: var(--gap-lg) 0;
-  border: 0;
-  background: var(--line);
+strong {
+  font-weight: 600;
 }
 
 :focus-visible {
-  outline: 3px solid var(--red);
-  outline-offset: 2px;
+  outline: 3px solid var(--blue);
+  outline-offset: 3px;
 }
 
-/* --------------------------------------------------------------- Utilities */
+/* -----------------------------------------------------------------------------
+   5. UTILITIES
+   -------------------------------------------------------------------------- */
 
 .wrap {
   width: 100%;
-  max-width: var(--wrap);
+  max-width: 90rem;
   margin-inline: auto;
-  padding-inline: clamp(1rem, 4vw, 2rem);
+  padding-inline: var(--gutter);
 }
 
 .visually-hidden {
   position: absolute;
   overflow: hidden;
-  clip: rect(0 0 0 0);
-  clip-path: inset(50%);
   width: 1px;
   height: 1px;
+  clip-path: inset(50%);
   white-space: nowrap;
 }
 
@@ -190,287 +256,1107 @@ hr {
 
 .skip-link:focus {
   position: fixed;
-  z-index: 200;
+  z-index: 300;
   top: 1rem;
   left: 1rem;
-  padding: 0.75rem 1.25rem;
-  border-radius: var(--radius);
-  background: var(--bg);
-  box-shadow: var(--shadow);
-  color: var(--blue-dark);
+  border: var(--hairline);
+  background: var(--paper);
   font-weight: 600;
+  padding: 0.75rem 1.25rem;
+  text-decoration: none;
 }
 
 .section {
-  padding-block: var(--section);
+  position: relative;
+  width: 100%;
+  padding-block: var(--section-pad);
 }
 
-.section--alt {
-  background: var(--bg-alt);
+.section--tight {
+  padding-block: calc(var(--section-pad) * 0.55);
 }
 
-.section--tint {
-  background: var(--blue-tint);
+.section--wash {
+  background: var(--wash);
+}
+
+.section--ink {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.section--ink a:hover {
+  color: var(--yellow);
 }
 
 .section__lead {
-  max-width: 62ch;
-  color: var(--ink-muted);
-  font-size: var(--step-1);
+  max-width: 42ch;
+  font-size: 1.125rem;
 }
 
 .stack > * + * {
   margin-top: 1rem;
 }
 
-/* ------------------------------------------------------------------ Buttons */
-
-.btn {
-  display: inline-block;
-  min-height: 44px;
-  padding: 0.7rem 1.4rem;
-  border: 2px solid transparent;
-  border-radius: var(--radius);
-  font-size: var(--step-0);
-  font-weight: 600;
-  line-height: 1.5;
-  text-align: center;
-  text-decoration: none;
+.eyebrow {
+  display: block;
+  margin-bottom: 1.25rem;
+  font-family: var(--font-text);
+  font-size: var(--fs-fine);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
-.btn--primary {
-  background: var(--blue);
-  color: #fff;
+.rule-top {
+  border-top: var(--hairline);
 }
 
-.btn--primary:hover {
-  background: var(--blue-dark);
-  color: #fff;
+/* -----------------------------------------------------------------------------
+   6. GRID
+   Twelve columns are the spine. Content aligns to them; colour blocks and the
+   marquee deliberately bleed past. Headings start at column 3, producing the
+   recurring left indent marked by a vertical hairline.
+   -------------------------------------------------------------------------- */
+
+.container {
+  display: grid;
+  width: 100%;
+  max-width: 90rem;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  column-gap: var(--col-gap);
+  grid-template-columns: repeat(var(--columns), 1fr);
+  row-gap: var(--row-gap);
 }
 
-.btn--accent {
-  background: var(--red);
-  color: #fff;
+.section--ruled > .container::before {
+  border-left: var(--hairline);
+  content: "";
+  grid-column: 3;
+  grid-row: 1 / -1;
 }
 
-.btn--accent:hover {
-  background: #8f1f15;
-  color: #fff;
+.col-heading {
+  grid-column: 3 / span 8;
 }
 
-.btn--ghost {
-  border-color: var(--blue);
-  background: transparent;
-  color: var(--blue);
+.col-body {
+  grid-column: 3 / span 5;
 }
 
-.btn--ghost:hover {
-  background: var(--blue-tint);
-  color: var(--blue-dark);
+.col-aside {
+  grid-column: 9 / span 4;
 }
 
-/* On the dark hero, the default ghost button would be blue-on-dark-blue and
-   fail contrast badly. Invert it there. */
-.hero .btn--ghost {
-  border-color: #fff;
-  color: #fff;
+.col-full {
+  grid-column: 1 / -1;
 }
 
-.hero .btn--ghost:hover {
-  background: #fff;
-  color: var(--blue-dark);
+/* Grid children default to min-width:auto, so a long word or a wide image can
+   push a narrow column past the viewport. Explicitly allow them to shrink. */
+.container > * {
+  min-width: 0;
 }
 
-.btn-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-top: 1.5rem;
+/* Below the reference's 767px breakpoint the 12-column grid collapses to four
+   and every named column runs full width. The heading indent rule goes with
+   it — there is no room for a 2-column indent on a phone. */
+@media (width <= 48rem) {
+  .container {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .col-heading,
+  .col-body,
+  .col-aside {
+    grid-column: 1 / -1;
+  }
+
+  .section--ruled > .container::before {
+    display: none;
+  }
 }
 
-/* ------------------------------------------------------------------- Header */
+/* -----------------------------------------------------------------------------
+   7. NAVIGATION
+   A bordered box inset from the top-left corner, floating over the page rather
+   than docked to its edge. Actions sit in a matching cluster top-right.
+   -------------------------------------------------------------------------- */
 
 .site-header {
-  position: sticky;
+  position: fixed;
   z-index: 100;
   top: 0;
-  border-bottom: 3px solid var(--yellow);
-  background: #fff;
-
-  /* Held across navigations so the header does not repaint between pages. */
+  width: 100%;
+  padding: var(--gutter);
+  pointer-events: none;
   view-transition-name: site-header;
 }
 
 .site-header__inner {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: var(--gap);
-  padding-block: 0.6rem;
+  gap: var(--col-gap);
+}
+
+.nav-box {
+  display: flex;
+  height: var(--nav-h);
+  align-items: stretch;
+  border: var(--hairline);
+  background: var(--paper);
+  pointer-events: auto;
 }
 
 .brand {
   display: flex;
+  max-width: 15rem;
   align-items: center;
-  gap: 0.7rem;
-  color: var(--blue-dark);
+  padding-inline: 1rem;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  line-height: 1.05;
   text-decoration: none;
 }
 
-.brand__mark {
-  flex: none;
-  width: 52px;
-  height: 52px;
+.brand:hover {
+  color: var(--ink);
 }
 
-.brand__name {
-  display: block;
-  max-width: 22ch;
-  font-size: var(--step-0);
-  font-weight: 700;
-  line-height: 1.15;
+/* The colour-cell mark: a miniature of the page's Mondrian motif. */
+.nav-mark {
+  display: grid;
+  border-left: var(--hairline);
+  grid-template-columns: repeat(3, 1.6rem);
+  grid-template-rows: repeat(2, 1fr);
 }
 
-.brand__place {
-  display: block;
-  color: var(--ink-muted);
-  font-size: var(--step--1);
+.nav-mark span {
+  border: var(--hairline);
+}
+
+.nav-mark .c-y {
+  background: var(--yellow);
+}
+
+.nav-mark .c-b {
+  background: var(--blue);
+}
+
+.nav-mark .c-o {
+  background: var(--orange);
 }
 
 .nav-toggle {
-  display: flex;
-  width: 46px;
-  height: 46px;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  border: 2px solid var(--line-strong);
-  border-radius: var(--radius);
-  background: #fff;
+  display: grid;
+  width: 3.75rem;
+  border: 0;
+  border-left: var(--hairline);
+  background: transparent;
   cursor: pointer;
+  place-items: center;
 }
 
 .nav-toggle__bars,
-.nav-toggle__bars::before,
 .nav-toggle__bars::after {
   display: block;
   width: 22px;
-  height: 2px;
-  background: var(--blue-dark);
+  height: 1px;
+  background: var(--ink);
+  content: "";
+  transition: transform var(--dur-fast) var(--ease-out);
 }
 
 .nav-toggle__bars {
   position: relative;
 }
 
-.nav-toggle__bars::before,
 .nav-toggle__bars::after {
   position: absolute;
-  left: 0;
-  content: "";
-}
-
-.nav-toggle__bars::before {
-  top: -7px;
-}
-
-.nav-toggle__bars::after {
   top: 7px;
+  left: 0;
 }
 
 .nav-toggle[aria-expanded="true"] .nav-toggle__bars {
-  background: transparent;
-}
-
-.nav-toggle[aria-expanded="true"] .nav-toggle__bars::before {
-  top: 0;
-  transform: rotate(45deg);
+  transform: translateY(3px) rotate(45deg);
 }
 
 .nav-toggle[aria-expanded="true"] .nav-toggle__bars::after {
-  top: 0;
-  transform: rotate(-45deg);
+  transform: translateY(-7px) rotate(-90deg);
 }
 
-.primary-nav {
+.nav-actions {
   display: none;
-  width: 100%;
-  padding-bottom: 0.75rem;
+  align-items: center;
+  gap: var(--gutter);
+  height: var(--nav-h);
+  pointer-events: auto;
+}
+
+@media (width >= 62rem) {
+  .nav-actions {
+    display: flex;
+  }
+}
+
+/* The menu panel. Full-bleed sheet, opened from the nav box. */
+.primary-nav {
+  position: fixed;
+  z-index: 99;
+  overflow-y: auto;
+  inset: 0;
+  padding: calc(var(--nav-h) + var(--gutter) * 2) var(--gutter) var(--gutter);
+  background: var(--paper);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity var(--dur-fast) var(--ease-out),
+    visibility var(--dur-fast);
+  visibility: hidden;
 }
 
 .primary-nav.is-open {
-  display: block;
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
 }
 
 .primary-nav__list {
-  margin: 0;
+  max-width: 90rem;
+  margin-inline: auto;
   padding: 0;
+  border-top: var(--hairline);
   list-style: none;
+}
+
+.primary-nav__list li {
+  border-bottom: var(--hairline);
 }
 
 .primary-nav__list a {
   display: block;
-  padding: 0.8rem 0.25rem;
-  border-bottom: 1px solid var(--line);
-  color: var(--blue-dark);
-  font-weight: 600;
+  padding-block: 0.65em;
+  font-family: var(--font-display);
+  font-size: var(--fs-heading);
   text-decoration: none;
+  transition: padding-left var(--dur-fast) var(--ease-out);
 }
 
 .primary-nav__list a:hover,
 .primary-nav__list a[aria-current="page"] {
-  color: var(--red);
+  padding-left: 1rem;
+  color: var(--blue);
 }
 
-.primary-nav__list a[aria-current="page"] {
-  border-bottom-color: var(--red);
+/* Every page pushes its content clear of the floating nav. */
+main {
+  padding-top: calc(var(--nav-h) + var(--gutter) * 2);
 }
 
-.primary-nav__cta {
+/* -----------------------------------------------------------------------------
+   8. BUTTONS — two variants, identical geometry.
+   -------------------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  padding: 0.625rem 2.5rem;
+  border: 1px solid var(--ink);
+  border-radius: var(--pill);
+  font-family: var(--font-text);
+  font-size: var(--fs-body);
+  letter-spacing: var(--tracking);
+  text-align: center;
+  text-decoration: none;
+  transition:
+    background-color var(--dur-fast) ease,
+    color var(--dur-fast) ease,
+    border-color var(--dur-fast) ease;
+}
+
+.btn--primary,
+.btn--accent,
+.btn--solid {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.btn--primary:hover,
+.btn--accent:hover,
+.btn--solid:hover {
+  border-color: var(--blue);
+  background: var(--blue);
+  color: var(--paper);
+}
+
+.btn--ghost,
+.btn--outline {
+  background: transparent;
+  color: var(--ink);
+}
+
+.btn--ghost:hover,
+.btn--outline:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.section--ink .btn--ghost,
+.hero--ink .btn--ghost {
+  border-color: var(--paper);
+  color: var(--paper);
+}
+
+.section--ink .btn--ghost:hover,
+.hero--ink .btn--ghost:hover {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+/* -----------------------------------------------------------------------------
+   9. MONDRIAN MOTIF — bookends the page: hero, then the closing CTA.
+   -------------------------------------------------------------------------- */
+
+.motif {
+  display: grid;
+  width: max-content;
+  grid-auto-rows: 2.5rem;
+  grid-template-columns: repeat(6, 2.5rem);
+}
+
+.motif span {
+  border: var(--hairline);
+}
+
+.motif .c-y {
+  background: var(--yellow);
+}
+
+.motif .c-b {
+  background: var(--blue);
+}
+
+.motif .c-o {
+  background: var(--orange);
+}
+
+.motif .c-g {
+  background: var(--green);
+}
+
+/* Hairline diagonal, drawn with a gradient so it stays crisp at any size. */
+.motif .c-diag {
+  position: relative;
+}
+
+.motif .c-diag::after {
+  position: absolute;
+  background: linear-gradient(
+    to bottom right,
+    transparent calc(50% - 0.5px),
+    var(--ink) 50%,
+    transparent calc(50% + 0.5px)
+  );
+  content: "";
+  inset: 0;
+}
+
+/* Full-bleed colour bands running past the viewport edge. */
+.band {
+  width: 100vw;
+  height: 3rem;
+  margin-inline: calc(50% - 50vw);
+}
+
+.band--blue {
+  background: var(--blue);
+}
+
+.band--orange {
+  background: var(--orange);
+}
+
+.band--yellow {
+  background: var(--yellow);
+}
+
+.band--green {
+  background: var(--green);
+}
+
+/* -----------------------------------------------------------------------------
+   10. HERO
+   -------------------------------------------------------------------------- */
+
+.hero {
+  position: relative;
+  padding-top: calc(var(--nav-h) + var(--gutter) * 2);
+  padding-bottom: var(--section-pad);
+}
+
+.hero__inner {
+  align-items: end;
+}
+
+.hero__copy {
+  grid-column: 1 / span 7;
+}
+
+.hero h1 {
+  font-size: var(--fs-display);
+  margin-bottom: 0.3em;
+}
+
+.hero__lead {
+  max-width: 38ch;
+  font-size: 1.125rem;
+}
+
+.hero__motif {
+  align-self: end;
+  grid-column: 9 / span 4;
+}
+
+.hero__media {
+  margin-top: var(--section-pad);
+  grid-column: 1 / -1;
+}
+
+.hero__media img {
+  aspect-ratio: 16 / 6;
+  object-fit: cover;
+}
+
+@media (width <= 62rem) {
+  .hero__copy,
+  .hero__motif,
+  .hero__media {
+    grid-column: 1 / -1;
+  }
+
+  .hero__motif {
+    margin-top: 2rem;
+  }
+}
+
+/* -----------------------------------------------------------------------------
+   11. PAGE HEAD — the interior-page equivalent of the hero.
+   -------------------------------------------------------------------------- */
+
+.page-head {
+  padding-top: calc(var(--nav-h) + var(--gutter) * 2);
+  padding-bottom: var(--section-pad);
+  border-bottom: var(--hairline);
+}
+
+.page-head h1 {
+  max-width: 18ch;
+  font-size: var(--fs-display);
+}
+
+.page-head p {
+  max-width: 46ch;
+  font-size: 1.125rem;
+}
+
+/* Interior pages: main already offsets the nav, so the head must not double it. */
+main > .page-head:first-child,
+main > .hero:first-child {
+  padding-top: 0;
+}
+
+/* -----------------------------------------------------------------------------
+   12. VALUE-PROP ROWS — title · paragraph · flush-right photo, rule-separated.
+   -------------------------------------------------------------------------- */
+
+.prop-row {
+  display: grid;
+  align-items: start;
+  padding-block: 2rem;
+  border-top: var(--hairline);
+  column-gap: var(--col-gap);
+  grid-template-columns: repeat(var(--columns), 1fr);
+}
+
+.prop-row:last-child {
+  border-bottom: var(--hairline);
+}
+
+.prop-row__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-heading);
+  grid-column: 1 / span 3;
+  line-height: var(--lh-tight);
+}
+
+.prop-row__body {
+  grid-column: 5 / span 4;
+  margin: 0;
+}
+
+.prop-row__media {
+  overflow: hidden;
+  aspect-ratio: 3 / 2;
+  grid-column: 11 / span 2;
+}
+
+.prop-row__media img {
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (width <= 62rem) {
+  .prop-row__title,
+  .prop-row__body,
+  .prop-row__media {
+    grid-column: 1 / -1;
+  }
+
+  .prop-row__media {
+    max-width: 16rem;
+    margin-top: 1rem;
+  }
+}
+
+/* -----------------------------------------------------------------------------
+   13. PILLAR MOSAIC — numbered cards on a 4-up grid, one filled, some photo.
+   -------------------------------------------------------------------------- */
+
+.pillars {
+  display: grid;
+  gap: var(--col-gap);
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.pillar {
+  position: relative;
+  display: flex;
+  min-height: 24rem;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.5rem;
+  border: var(--hairline);
+  gap: 0.75rem;
+}
+
+.pillar__no {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  font-size: var(--fs-fine);
+  letter-spacing: 0.1em;
+}
+
+.pillar__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-heading);
+}
+
+.pillar p {
+  margin: 0;
+  max-width: 30ch;
+  font-size: var(--fs-fine);
+  line-height: 1.6;
+}
+
+.pillar--fill {
+  border-color: var(--yellow);
+  background: var(--yellow);
+}
+
+.pillar--photo {
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+}
+
+.pillar--photo img {
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (width <= 62rem) {
+  .pillars {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (width <= 34rem) {
+  .pillars {
+    grid-template-columns: 1fr;
+  }
+
+  .pillar {
+    min-height: 16rem;
+  }
+}
+
+/* -----------------------------------------------------------------------------
+   14. PHOTO MARQUEE — edge-to-edge auto-scrolling strip.
+   -------------------------------------------------------------------------- */
+
+.marquee {
+  overflow: hidden;
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+  mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+}
+
+.marquee__track {
+  display: flex;
+  width: max-content;
+  animation: marquee 48s linear infinite;
+  gap: var(--col-gap);
+}
+
+.marquee:hover .marquee__track {
+  animation-play-state: paused;
+}
+
+.marquee__item {
+  overflow: hidden;
+  width: 15rem;
+  flex: 0 0 15rem;
+  aspect-ratio: 3 / 4;
+}
+
+.marquee__item img {
+  height: 100%;
+  object-fit: cover;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.statement {
+  max-width: 22ch;
+  margin-inline: auto;
+  font-family: var(--font-display);
+  font-size: var(--fs-display);
+  line-height: var(--lh-tight);
+  text-align: center;
+  text-wrap: balance;
+}
+
+/* -----------------------------------------------------------------------------
+   15. SPLIT — copy beside a full-height photo.
+   -------------------------------------------------------------------------- */
+
+.split {
+  display: grid;
+  border-block: var(--hairline);
+  grid-template-columns: 1fr 1fr;
+}
+
+.split__copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: var(--section-pad) var(--gutter);
+  border-right: var(--hairline);
+  gap: 0.5rem;
+}
+
+.split__media {
+  overflow: hidden;
+  min-height: 24rem;
+}
+
+.split__media img {
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (width <= 48rem) {
+  .split {
+    grid-template-columns: 1fr;
+  }
+
+  .split__copy {
+    border-right: 0;
+    border-bottom: var(--hairline);
+  }
+}
+
+/* -----------------------------------------------------------------------------
+   16. CARDS, STATS, LISTS — existing content components, restyled in the
+   hairline idiom so all 25 pages inherit the new system.
+   -------------------------------------------------------------------------- */
+
+.grid {
+  display: grid;
+  gap: var(--col-gap);
+}
+
+.grid--2 {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+}
+
+.grid--3 {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+}
+
+.grid--4 {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  border: var(--hairline);
+  background: var(--paper);
+}
+
+.card h3 {
+  margin-bottom: 0.5rem;
+}
+
+.card p:last-of-type {
+  margin-bottom: 0;
+}
+
+.card__meta {
+  margin-bottom: 0.75rem;
+  font-size: var(--fs-fine);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.card__link {
+  margin-top: auto;
+  padding-top: 1.25rem;
+  font-size: var(--fs-fine);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.stat {
+  display: flex;
+  min-height: 9rem;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.25rem;
+  border: var(--hairline);
+}
+
+.stat__num {
   display: block;
-  margin-top: 0.9rem;
+  font-family: var(--font-display);
+  font-size: var(--fs-heading);
+  line-height: 1.1;
 }
 
-@media (width >= 62rem) {
-  .nav-toggle {
-    display: none;
-  }
-
-  .primary-nav {
-    display: flex;
-    width: auto;
-    align-items: center;
-    gap: 1.25rem;
-    padding-bottom: 0;
-  }
-
-  .primary-nav__list {
-    display: flex;
-    gap: 1.25rem;
-  }
-
-  .primary-nav__list a {
-    padding: 0.35rem 0;
-    border-bottom: 3px solid transparent;
-  }
-
-  .primary-nav__cta {
-    margin-top: 0;
-  }
-
-  .brand__name {
-    font-size: var(--step-1);
-  }
+.stat__label {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: var(--fs-fine);
 }
 
-/* -------------------------------------------------------------- Breadcrumbs */
+.tick-list {
+  padding-left: 0;
+  list-style: none;
+}
+
+.tick-list li {
+  position: relative;
+  padding: 0.6rem 0 0.6rem 1.75rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.tick-list li::before {
+  position: absolute;
+  left: 0;
+  content: "\2192";
+}
+
+.steps {
+  margin: 0;
+  padding-left: 0;
+  counter-reset: step;
+  list-style: none;
+}
+
+.steps li {
+  position: relative;
+  padding: 1.25rem 0 1.25rem 3.5rem;
+  border-top: var(--hairline);
+  counter-increment: step;
+}
+
+.steps li::before {
+  position: absolute;
+  top: 1.25rem;
+  left: 0;
+  content: counter(step, decimal-leading-zero);
+  font-family: var(--font-display);
+  font-size: var(--fs-heading);
+  line-height: 1;
+}
+
+.steps strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+
+/* -----------------------------------------------------------------------------
+   17. TABLES
+   -------------------------------------------------------------------------- */
+
+.table-scroll {
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-fine);
+}
+
+caption {
+  margin-bottom: 0.75rem;
+  font-size: var(--fs-fine);
+  text-align: left;
+}
+
+th,
+td {
+  padding: 0.85rem 1rem 0.85rem 0;
+  border-bottom: 1px solid var(--rule);
+  text-align: left;
+  vertical-align: top;
+}
+
+thead th {
+  border-bottom: var(--hairline);
+  font-size: var(--fs-fine);
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+tbody th {
+  font-weight: 600;
+}
+
+/* -----------------------------------------------------------------------------
+   18. NOTICES AND PLACEHOLDERS
+   -------------------------------------------------------------------------- */
+
+.notice {
+  padding: 1.5rem;
+  border: var(--hairline);
+  margin-block: 2rem;
+}
+
+.notice > :last-child {
+  margin-bottom: 0;
+}
+
+.notice--warn {
+  border-width: 2px;
+}
+
+.notice--ok {
+  border-color: var(--green);
+  border-width: 2px;
+}
+
+.notice__head {
+  margin-bottom: 0.5rem;
+  font-size: var(--fs-fine);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Deliberately loud: sample and missing content must never read as real
+   school information. */
+.placeholder {
+  padding: 1.5rem;
+  border: 2px dashed var(--orange);
+  background: #fff6f1;
+  margin-block: 2rem;
+}
+
+.placeholder > :last-child {
+  margin-bottom: 0;
+}
+
+.placeholder__tag {
+  display: inline-block;
+  padding: 0.2rem 0.7rem;
+  margin-bottom: 0.6rem;
+  background: var(--orange);
+  color: var(--ink);
+  font-size: var(--fs-fine);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.img-placeholder {
+  display: grid;
+  padding: 1rem;
+  border: 1px dashed var(--ink);
+  aspect-ratio: 3 / 2;
+  background: var(--wash);
+  font-size: var(--fs-fine);
+  place-items: center;
+  text-align: center;
+}
+
+/* -----------------------------------------------------------------------------
+   19. FAQ
+   -------------------------------------------------------------------------- */
+
+.faq {
+  border-top: var(--hairline);
+}
+
+.faq details {
+  border-bottom: var(--hairline);
+}
+
+.faq summary {
+  padding: 1.25rem 2.5rem 1.25rem 0;
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-size: var(--fs-heading);
+  list-style: none;
+  position: relative;
+}
+
+.faq summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq summary::after {
+  position: absolute;
+  top: 1.35rem;
+  right: 0;
+  content: "+";
+  font-size: 1.5rem;
+  line-height: 1;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.faq details[open] summary::after {
+  transform: rotate(45deg);
+}
+
+.faq details > div {
+  padding-bottom: 1.5rem;
+}
+
+/* -----------------------------------------------------------------------------
+   20. FORMS
+   -------------------------------------------------------------------------- */
+
+.form {
+  max-width: 34rem;
+}
+
+.field {
+  margin-bottom: 1.5rem;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: var(--fs-fine);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.field .hint {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: var(--fs-fine);
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  min-height: 48px;
+  padding: 0.65rem 0;
+  border: 0;
+  border-bottom: var(--hairline);
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: var(--fs-body);
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-bottom-width: 2px;
+  outline-offset: 4px;
+}
+
+.field--check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+
+.field--check input {
+  width: 22px;
+  min-height: 22px;
+  height: 22px;
+  margin-top: 0.2rem;
+}
+
+.field--check label {
+  margin-bottom: 0;
+  font-size: var(--fs-body);
+  font-weight: 400;
+  letter-spacing: var(--tracking);
+  text-transform: none;
+}
+
+.hp {
+  position: absolute;
+  left: -9999px;
+  opacity: 0;
+}
+
+/* -----------------------------------------------------------------------------
+   21. BREADCRUMBS
+   -------------------------------------------------------------------------- */
 
 .breadcrumbs {
-  padding-block: 0.85rem;
-  border-bottom: 1px solid var(--line);
-  background: var(--bg-alt);
-  font-size: var(--step--1);
+  padding-block: 1rem;
+  font-size: var(--fs-fine);
 }
 
 .breadcrumbs ol {
@@ -484,408 +1370,75 @@ hr {
 
 .breadcrumbs li + li::before {
   margin-right: 0.4rem;
-  color: var(--ink-muted);
   content: "/";
 }
 
-/* --------------------------------------------------------------------- Hero */
+/* -----------------------------------------------------------------------------
+   22. MAP FACADE
+   -------------------------------------------------------------------------- */
 
-.hero {
-  background: var(--blue-dark);
-  color: #fff;
-}
-
-.hero__inner {
-  display: grid;
-  align-items: center;
-  gap: var(--gap-lg);
-  padding-block: var(--section);
-}
-
-.hero h1 {
-  color: #fff;
-}
-
-.hero__lead {
-  max-width: 52ch;
-  color: #e7ecf7;
-  font-size: var(--step-1);
-}
-
-.hero__media img {
+.map-facade {
+  display: block;
   width: 100%;
-  border-radius: var(--radius);
-}
-
-@media (width >= 52rem) {
-  .hero__inner {
-    grid-template-columns: 1.1fr 1fr;
-  }
-}
-
-.page-head {
-  padding-block: clamp(2rem, 5vw, 3.25rem);
-  border-bottom: 1px solid var(--line);
-  background: var(--blue-tint);
-}
-
-.page-head p {
-  max-width: 65ch;
-  margin-bottom: 0;
-  color: var(--ink-muted);
-  font-size: var(--step-1);
-}
-
-/* -------------------------------------------------------------------- Cards */
-
-.grid {
-  display: grid;
-  gap: var(--gap-lg);
-}
-
-.grid--2 {
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
-}
-
-.grid--3 {
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
-}
-
-.grid--4 {
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
-}
-
-.card {
-  display: flex;
-  flex-direction: column;
-  padding: 1.5rem;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: #fff;
-}
-
-.card h3 {
-  margin-bottom: 0.4rem;
-}
-
-.card p:last-child {
-  margin-bottom: 0;
-}
-
-.card__meta {
-  color: var(--ink-muted);
-  font-size: var(--step--1);
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.card__link {
-  margin-top: auto;
-  padding-top: 0.75rem;
-  font-weight: 600;
-}
-
-.stat {
-  padding: 1.25rem;
-  border-radius: var(--radius);
-  background: var(--yellow-tint);
-  text-align: center;
-}
-
-.stat__num {
-  display: block;
-  color: var(--blue-dark);
-  font-size: var(--step-3);
-  font-weight: 700;
-  line-height: 1.1;
-}
-
-.stat__label {
-  display: block;
-  color: var(--ink-muted);
-  font-size: var(--step--1);
-}
-
-/* ------------------------------------------------------------------- Tables */
-
-.table-scroll {
-  overflow-x: auto;
-  margin-bottom: 1rem;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: var(--step-0);
-}
-
-caption {
-  margin-bottom: 0.5rem;
-  color: var(--ink-muted);
-  font-size: var(--step--1);
-  text-align: left;
-}
-
-th,
-td {
-  padding: 0.7rem 0.85rem;
-  border-bottom: 1px solid var(--line);
-  text-align: left;
-  vertical-align: top;
-}
-
-thead th {
-  border-bottom: 2px solid var(--line-strong);
-  background: var(--bg-alt);
-  color: var(--blue-dark);
-}
-
-/* ------------------------------------------------------------------- Notice */
-
-.notice {
-  padding: 1.15rem 1.35rem;
-  border-left: 5px solid var(--blue);
-  border-radius: var(--radius);
-  margin-block: 1.5rem;
-  background: var(--blue-tint);
-}
-
-.notice > :last-child {
-  margin-bottom: 0;
-}
-
-.notice--warn {
-  border-left-color: var(--red);
-  background: var(--red-tint);
-}
-
-.notice--ok {
-  border-left-color: var(--green);
-  background: var(--green-tint);
-}
-
-.notice__head {
-  margin-bottom: 0.35rem;
-  font-size: var(--step-0);
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-/* Placeholder / sample-data marker. Deliberately loud: this must never be
-   mistaken for real school information once the site is live. */
-.placeholder {
-  padding: 1.15rem 1.35rem;
-  border: 2px dashed var(--red);
-  border-radius: var(--radius);
-  margin-block: 1.5rem;
-  background: repeating-linear-gradient(
-    45deg,
-    var(--red-tint),
-    var(--red-tint) 12px,
-    #fff 12px,
-    #fff 24px
-  );
-}
-
-.placeholder > :last-child {
-  margin-bottom: 0;
-}
-
-.placeholder__tag {
-  display: inline-block;
-  padding: 0.15rem 0.6rem;
-  border-radius: 4px;
-  margin-bottom: 0.4rem;
-  background: var(--red);
-  color: #fff;
-  font-size: var(--step--1);
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.img-placeholder {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-  border: 2px dashed var(--line-strong);
-  border-radius: var(--radius);
-  aspect-ratio: 3 / 2;
-  background: var(--bg-alt);
-  color: var(--ink-muted);
-  font-size: var(--step--1);
-  text-align: center;
-}
-
-/* -------------------------------------------------------------------- Lists */
-
-.tick-list {
-  padding-left: 0;
-  list-style: none;
-}
-
-.tick-list li {
-  position: relative;
-  margin-bottom: 0.55rem;
-  padding-left: 1.75rem;
-}
-
-.tick-list li::before {
-  position: absolute;
-  left: 0;
-  color: var(--green);
-  content: "\2713";
-  font-weight: 700;
-}
-
-.steps {
-  margin: 0;
-  padding-left: 1.3rem;
-}
-
-.steps li {
-  margin-bottom: 1rem;
-  padding-left: 0.35rem;
-}
-
-.steps strong {
-  display: block;
-  color: var(--blue-dark);
-}
-
-.faq {
-  border-top: 1px solid var(--line);
-}
-
-.faq details {
-  border-bottom: 1px solid var(--line);
-}
-
-.faq summary {
-  padding: 1rem 0;
-  color: var(--blue-dark);
-  cursor: pointer;
-  font-size: var(--step-1);
-  font-weight: 600;
-}
-
-.faq details[open] summary {
-  color: var(--red);
-}
-
-.faq div {
-  padding-bottom: 1rem;
-}
-
-/* --------------------------------------------------------------------- Form */
-
-.form {
-  max-width: 34rem;
-}
-
-.field {
-  margin-bottom: 1.25rem;
-}
-
-.field label {
-  display: block;
-  margin-bottom: 0.3rem;
-  color: var(--blue-dark);
-  font-weight: 600;
-}
-
-.field .hint {
-  display: block;
-  margin-bottom: 0.35rem;
-  color: var(--ink-muted);
-  font-size: var(--step--1);
-  font-weight: 400;
-}
-
-.field input,
-.field select,
-.field textarea {
-  width: 100%;
-  min-height: 46px;
-  padding: 0.6rem 0.75rem;
-  border: 2px solid var(--line-strong);
-  border-radius: var(--radius);
-  background: #fff;
+  padding: 0;
+  border: var(--hairline);
+  aspect-ratio: 16 / 9;
+  background: var(--wash);
   color: var(--ink);
+  cursor: pointer;
   font-family: inherit;
-  font-size: var(--step-0);
+  font-size: var(--fs-body);
+  transition: background-color var(--dur-fast) ease;
 }
 
-.field input:focus,
-.field select:focus,
-.field textarea:focus {
-  border-color: var(--blue);
+.map-facade:hover {
+  background: var(--yellow);
 }
 
-.field--check {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.6rem;
+.map-embed {
+  width: 100%;
+  border: 0;
+  aspect-ratio: 16 / 9;
 }
 
-.field--check input {
-  width: 22px;
-  min-height: 22px;
-  height: 22px;
-  margin-top: 0.25rem;
-}
-
-.field--check label {
-  margin-bottom: 0;
-  font-weight: 400;
-}
-
-/* Honeypot: hidden from people, visible to naive bots. Not display:none,
-   which some bots detect and skip. */
-.hp {
-  position: absolute;
-  left: -9999px;
-  opacity: 0;
-}
-
-/* ------------------------------------------------------------------- Footer */
+/* -----------------------------------------------------------------------------
+   23. FOOTER
+   -------------------------------------------------------------------------- */
 
 .site-footer {
-  border-top: 4px solid var(--yellow);
-  background: var(--blue-dark);
-  color: #dfe6f4;
+  border-top: var(--hairline);
   view-transition-name: site-footer;
-}
-
-.site-footer a {
-  color: #fff;
-}
-
-.site-footer a:hover {
-  color: var(--yellow);
 }
 
 .site-footer__grid {
   display: grid;
-  gap: var(--gap-lg);
-  padding-block: var(--section) var(--gap-lg);
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  padding-block: var(--section-pad) 2rem;
+  gap: var(--col-gap) var(--col-gap);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+}
+
+.site-footer__wordmark {
+  margin: 0 0 2rem;
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 11vw, 7.5rem);
+  grid-column: 1 / -1;
+  line-height: 0.95;
+}
+
+.site-footer__wordmark span {
+  color: var(--blue);
 }
 
 .site-footer__brand {
-  color: #fff;
-  font-size: var(--step-1);
-  font-weight: 700;
+  font-size: var(--fs-fine);
 }
 
 .site-footer__head {
-  margin-bottom: 0.6rem;
-  color: var(--yellow);
-  font-size: var(--step-0);
-  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+  font-family: var(--font-text);
+  font-size: var(--fs-fine);
+  font-weight: 400;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
@@ -895,63 +1448,80 @@ thead th {
 }
 
 .site-footer__list li {
-  margin-bottom: 0.45rem;
+  border-top: 1px solid var(--rule);
+}
+
+.site-footer__list a {
+  display: block;
+  padding-block: 0.5rem;
+  font-size: var(--fs-fine);
+  text-decoration: none;
 }
 
 .site-footer__address {
-  margin-bottom: 0.75rem;
+  font-size: var(--fs-fine);
   font-style: normal;
+  line-height: 1.7;
 }
 
 .site-footer__muted {
-  color: #b9c5de;
-  font-size: var(--step--1);
+  font-size: var(--fs-fine);
 }
 
 .site-footer__base {
-  padding-block: 1.25rem;
-  border-top: 1px solid rgb(255 255 255 / 18%);
-  font-size: var(--step--1);
+  padding-block: 1.5rem;
+  border-top: var(--hairline);
+  font-size: var(--fs-fine);
 }
 
 .site-footer__base p {
   margin: 0;
+  max-width: none;
 }
 
-/* ---------------------------------------------------------------- Map facade */
+/* -----------------------------------------------------------------------------
+   24. MOTION
 
-.map-facade {
-  display: block;
-  width: 100%;
-  padding: 0;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  aspect-ratio: 16 / 9;
-  background: var(--blue-tint);
-  color: var(--blue-dark);
-  cursor: pointer;
-  font-family: inherit;
-  font-size: var(--step-0);
-  font-weight: 600;
+   Scroll reveal: blocks mask up as they enter the viewport. The class is added
+   by IntersectionObserver, and the no-JS fallback below keeps everything
+   visible if the script never runs — content must never depend on motion.
+   -------------------------------------------------------------------------- */
+
+/* Content is visible by default and only becomes hidden-then-revealed once
+   site.js has confirmed it is running, by setting .js-reveal on <html>. The
+   inverse — hiding by default and relying on script to show — leaves the page
+   permanently blank if that script 404s or is blocked. Never make content
+   depend on JavaScript. */
+
+.js-reveal [data-reveal] {
+  opacity: 0;
+  transform: translateY(1.5rem);
+  transition:
+    opacity var(--dur-slow) var(--ease-out),
+    transform var(--dur-slow) var(--ease-out);
 }
 
-.map-embed {
-  width: 100%;
-  border: 0;
-  border-radius: var(--radius);
-  aspect-ratio: 16 / 9;
+.js-reveal [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
 }
 
-/* --------------------------------------------------------- Page transitions
+/* Staggered children, used on the motif and card grids. */
+.js-reveal [data-reveal-stagger] > * {
+  opacity: 0;
+  transform: translateY(0.75rem);
+  transition:
+    opacity 0.5s var(--ease-out),
+    transform 0.5s var(--ease-out);
+}
 
-   Cross-document view transitions. Pages cross-fade instead of flashing white
-   between navigations, and the header stays put rather than repainting.
+.js-reveal [data-reveal-stagger].is-visible > * {
+  opacity: 1;
+  transform: none;
+}
 
-   Pure progressive enhancement: no JavaScript, and browsers without support
-   simply navigate as before. Kept deliberately brief -- 90ms out, 180ms in --
-   because on a slow connection a long transition reads as the site hanging,
-   not as polish. */
-
+/* Cross-document view transitions. Deliberately brief: on a slow connection a
+   long transition reads as the site hanging, not as polish. */
 @view-transition {
   navigation: auto;
 }
@@ -977,11 +1547,22 @@ thead th {
   animation: vt-fade-in 180ms ease-out both;
 }
 
-/* ------------------------------------------------------------------- Motion */
-
 @media (prefers-reduced-motion: reduce) {
-  /* A view transition is motion too -- honour the setting rather than
-     animating anyway. */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  [data-reveal],
+  [data-reveal-stagger] > * {
+    opacity: 1;
+    transform: none;
+  }
+
   ::view-transition-group(*),
   ::view-transition-old(*),
   ::view-transition-new(*) {
@@ -989,23 +1570,20 @@ thead th {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-/* -------------------------------------------------------------------- Print */
+/* -----------------------------------------------------------------------------
+   25. PRINT
+   -------------------------------------------------------------------------- */
 
 @media print {
   .site-header,
   .site-footer,
   .breadcrumbs,
-  .btn-row {
+  .btn-row,
+  .marquee {
     display: none;
+  }
+
+  main {
+    padding-top: 0;
   }
 }
