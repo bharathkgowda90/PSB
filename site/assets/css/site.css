@@ -1,24 +1,23 @@
 /* =============================================================================
    Prashanth High School of Brilliance — design system
 
-   Structure follows the Primer.com system supplied as reference: a fluid root,
-   a 12-column grid with hairline rules, black type on white paper, flat colour
-   used structurally rather than as type colour, full-pill buttons in exactly
-   two variants, and an exposed Mondrian grid motif that bookends the page.
+   A fluid root, a 12-column grid with hairline rules, black type on white
+   paper, flat colour used structurally rather than as type colour, full-pill
+   buttons in exactly two variants, and an exposed grid motif that bookends
+   the page.
 
-   Reimplemented from scratch rather than copied. Two deliberate departures are
-   marked DEVIATION below, both for the same reason: this site is read on
-   mid-range Android phones over patchy rural 4G, by parents and grandparents,
-   and has to clear WCAG 2.1 AA.
+   Two deliberate departures from the design direction are marked DEVIATION
+   below, both for the same reason: this site is read on mid-range Android
+   phones over patchy rural 4G, by parents and grandparents, and has to clear
+   WCAG 2.1 AA.
    ========================================================================== */
 
 /* -----------------------------------------------------------------------------
    1. FONTS — self-hosted, no third-party request on any page view.
 
-   Playfair Display stands in for Primer's licensed Sirca: a high-contrast
-   display serif, variable 400-900. The reference sets headings noticeably
-   heavier than book weight, so --wt-display carries that.
-   Lexend carries all running text in place of Söhne.
+   Playfair Display carries every heading: a high-contrast display serif,
+   variable 400-900. Headings sit noticeably heavier than book weight, which
+   --wt-display sets. Lexend carries all running text.
    -------------------------------------------------------------------------- */
 
 @font-face {
@@ -397,8 +396,8 @@ strong {
   width: 100%;
 }
 
-/* One bordered bar across the full content width: wordmark, colour mark,
-   actions, then the menu button — exactly as the reference. */
+/* One bar across the full width: wordmark, colour mark, actions, then the
+   menu button. */
 .nav-box {
   display: flex;
   height: var(--nav-h);
@@ -414,9 +413,10 @@ strong {
   align-items: center;
   padding-inline: var(--gutter);
   font-family: var(--font-display);
-  font-size: clamp(1.4rem, 5.5vw, 2rem);
+  max-width: 22ch;
+  font-size: clamp(0.95rem, 2.6vw, 1.4rem);
   font-weight: var(--wt-display);
-  line-height: 1;
+  line-height: 1.1;
   text-decoration: none;
 }
 
@@ -733,9 +733,8 @@ main {
 
 /* -----------------------------------------------------------------------------
    10. HERO
-   A full-bleed cut-out photograph, then a bordered band whose centred copy is
-   flanked by vertical strips of the grid motif — the framing device the
-   reference uses to bookend its hero.
+   A full-bleed photograph, then a bordered band whose centred copy is flanked
+   by vertical strips of the grid motif, framing the hero.
    -------------------------------------------------------------------------- */
 
 .hero {
@@ -752,13 +751,29 @@ main {
 .hero__media img {
   width: 100%;
   max-width: none;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 3 / 2;
+  background: var(--paper);
   object-fit: cover;
+  object-position: center;
+}
+
+@media (width >= 34rem) {
+  .hero__media img {
+    aspect-ratio: 2 / 1;
+  }
 }
 
 @media (width >= 48rem) {
   .hero__media img {
-    aspect-ratio: 21 / 8;
+    aspect-ratio: 3 / 1;
+  }
+}
+
+/* Wide enough to show the whole line-up uncropped, at its natural ratio. */
+@media (width >= 75rem) {
+  .hero__media img {
+    aspect-ratio: 4096 / 825;
+    object-fit: contain;
   }
 }
 
@@ -910,8 +925,8 @@ main > .hero:first-child {
 
 /* -----------------------------------------------------------------------------
    13. PILLAR CARDS
-   Number top-left, photograph top-right, then the title and body beneath —
-   the reference's card anatomy. Two up on wide screens, stacked on a phone.
+   Number top-left, photograph top-right, then the title and body beneath.
+   Two up on wide screens, stacked on a phone.
    -------------------------------------------------------------------------- */
 
 .pillars {
@@ -1562,7 +1577,7 @@ tbody th {
 .site-footer__wordmark {
   margin: 0 0 2.5rem;
   font-family: var(--font-display);
-  font-size: clamp(3.5rem, 15vw, 9rem);
+  font-size: clamp(2rem, 7vw, 4.75rem);
   font-weight: var(--wt-display);
   grid-column: 1 / -1;
   letter-spacing: -0.02em;

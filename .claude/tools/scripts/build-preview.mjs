@@ -19,7 +19,7 @@ import { fileURLToPath } from "node:url";
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, "../../..");
 const DIST = path.join(ROOT, "dist");
-const OUT = path.join(ROOT, "preview.html");
+const OUT = path.join(ROOT, "site-preview.html");
 
 if (!existsSync(DIST)) {
   console.error("No dist/ -- run `npm run build` first.");
@@ -158,7 +158,6 @@ ${inlinedCss}
         font-family: inherit;
         font-size: 0.85rem;
       }
-      .site-header { top: 2.6rem; }
     </style>
   </head>
   <body>
@@ -275,5 +274,5 @@ ${inlinedCss}
 
 await writeFile(OUT, doc);
 console.log(
-  `preview.html written: ${pages.length} pages, ${(Buffer.byteLength(doc) / 1024).toFixed(0)}kB`,
+  `site-preview.html written: ${pages.length} pages, ${(Buffer.byteLength(doc) / 1024).toFixed(0)}kB`,
 );

@@ -51,15 +51,13 @@ Roughly 40 marked gaps remain. In priority order:
 
 ---
 
-## 2b. On the supplied image set
+## 2b. On the photographs currently in place
 
-A zip of 106 images was supplied for use as site photography. 104 of them are
-Primer's own assets, identifiable by the Webflow CDN hash prefixes and
-filenames (`102825-NEWKID-PRIMER-*`, `campus-*`, `tesimonial-img-*`), and the
-reference sheet they came from states plainly that they are **not licensed for
-reuse**.
+The photographs currently on the site were supplied as stand-ins for layout
+review. They are third-party stock taken from another school's website, and the
+sheet they came from states plainly that they are **not licensed for reuse**.
 
-They were not used, for two reasons that are independent of each other:
+They must be replaced, for two reasons that are independent of each other:
 
 1. **Licensing.** They are another company's commercial photography.
 2. **They are photographs of identifiable children who do not attend this
@@ -69,12 +67,14 @@ They were not used, for two reasons that are independent of each other:
    it is worse than a visible placeholder because it is not recoverable once a
    family notices.
 
-Two files from the set were usable and are now in place:
+The school's own crest was also supplied, and is genuinely in use: as the
+favicon, the Apple touch icon, the social-share card, in the footer, and on the
+About page.
 
-- `psb-logo.png` — the school's actual crest. Optimised and now used as the
-  favicon, the Apple touch icon, the social-share card, in the footer, and on
-  the About page.
-- `image_51.jpg` — a 1×1 tracking pixel, discarded.
+`site/assets/img/_raw/REPLACE-THESE.md` lists every stand-in, where it appears,
+and what the school's own photograph should show. Filenames are stable, so
+replacing a file and re-running `npm run images && npm run build` needs no
+markup changes.
 
 The photography brief in `docs/website-plan.md` §7 still stands: roughly 60–80
 photographs of this school, shot on a working day, with written media consent

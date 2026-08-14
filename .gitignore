@@ -8,7 +8,7 @@
 dist/
 
 # Single-file review preview, regenerate with `npm run preview`
-preview.html
+site-preview.html
 
 # Original photos are large; keep them out of git unless the school wants them versioned
 site/assets/img/_raw/
@@ -23,4 +23,3 @@ Thumbs.db
 # Logs
 *.log
 npm-debug.log*
-preview-primer.html
