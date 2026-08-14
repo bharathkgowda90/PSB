@@ -296,6 +296,9 @@ hr {
   top: 0;
   border-bottom: 3px solid var(--yellow);
   background: #fff;
+
+  /* Held across navigations so the header does not repaint between pages. */
+  view-transition-name: site-header;
 }
 
 .site-header__inner {
@@ -854,6 +857,7 @@ thead th {
   border-top: 4px solid var(--yellow);
   background: var(--blue-dark);
   color: #dfe6f4;
+  view-transition-name: site-footer;
 }
 
 .site-footer a {
@@ -938,7 +942,52 @@ thead th {
   aspect-ratio: 16 / 9;
 }
 
+/* --------------------------------------------------------- Page transitions
+
+   Cross-document view transitions. Pages cross-fade instead of flashing white
+   between navigations, and the header stays put rather than repainting.
+
+   Pure progressive enhancement: no JavaScript, and browsers without support
+   simply navigate as before. Kept deliberately brief -- 90ms out, 180ms in --
+   because on a slow connection a long transition reads as the site hanging,
+   not as polish. */
+
+@view-transition {
+  navigation: auto;
+}
+
+@keyframes vt-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes vt-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+::view-transition-old(root) {
+  animation: vt-fade-out 90ms ease-in both;
+}
+
+::view-transition-new(root) {
+  animation: vt-fade-in 180ms ease-out both;
+}
+
 /* ------------------------------------------------------------------- Motion */
+
+@media (prefers-reduced-motion: reduce) {
+  /* A view transition is motion too -- honour the setting rather than
+     animating anyway. */
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
 
 @media (prefers-reduced-motion: reduce) {
   *,
