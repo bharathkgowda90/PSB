@@ -119,6 +119,57 @@
     while (clone.firstChild) track.appendChild(clone.firstChild);
   });
 
+  /* --------------------------------------------------- Testimonial carousel
+
+     Enhancement only: without this script every quote is stacked and readable.
+     The script hides all but one, then steps through them. It wraps in both
+     directions, so the arrows never dead-end. */
+
+  document.querySelectorAll("[data-carousel]").forEach(function (root) {
+    var slides = Array.prototype.slice.call(root.querySelectorAll(".testimonial__slide"));
+    if (slides.length < 2) return;
+
+    var prev = root.querySelector("[data-carousel-prev]");
+    var next = root.querySelector("[data-carousel-next]");
+    var fill = root.querySelector(".testimonial__progress span");
+    var status = root.querySelector("[data-carousel-status]");
+    var index = 0;
+
+    document.documentElement.classList.add("js-carousel");
+
+    function show(i) {
+      index = (i + slides.length) % slides.length;
+      slides.forEach(function (s, n) {
+        if (n === index) s.removeAttribute("hidden");
+        else s.setAttribute("hidden", "");
+      });
+      if (fill) fill.style.width = ((index + 1) / slides.length) * 100 + "%";
+      // Announced rather than shown, so screen-reader users know where they are.
+      if (status) status.textContent = "Testimonial " + (index + 1) + " of " + slides.length;
+    }
+
+    if (prev)
+      prev.addEventListener("click", function () {
+        show(index - 1);
+      });
+    if (next)
+      next.addEventListener("click", function () {
+        show(index + 1);
+      });
+
+    // Left/right arrows step the carousel when focus is inside it.
+    root.addEventListener("keydown", function (event) {
+      if (event.key === "ArrowLeft") {
+        show(index - 1);
+      } else if (event.key === "ArrowRight") {
+        show(index + 1);
+      } else return;
+      event.preventDefault();
+    });
+
+    show(0);
+  });
+
   /* ----------------------------------------------------------- Map facade
 
      The Google Maps iframe is not requested until the visitor asks for it. On

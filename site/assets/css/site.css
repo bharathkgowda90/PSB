@@ -413,14 +413,14 @@ strong {
   align-items: center;
   padding-inline: var(--gutter);
   font-family: var(--font-display);
-  font-size: clamp(0.95rem, 2.6vw, 1.4rem);
+  font-size: clamp(0.8rem, 3vw, 1.4rem);
   font-weight: var(--wt-display);
   line-height: 1.1;
   text-decoration: none;
 }
 
 .brand__label {
-  max-width: 22ch;
+  white-space: nowrap;
 }
 
 .brand:hover {
@@ -449,6 +449,17 @@ strong {
 
 .nav-mark .c-o {
   background: var(--orange);
+}
+
+@media (width <= 23.5rem) {
+  .brand {
+    padding-inline: 1rem;
+    font-size: 0.72rem;
+  }
+
+  .nav-mark {
+    grid-template-columns: repeat(2, calc(var(--nav-h) / 3));
+  }
 }
 
 .nav-toggle {
@@ -775,7 +786,7 @@ main {
 /* Wide enough to show the whole line-up uncropped, at its natural ratio. */
 @media (width >= 75rem) {
   .hero__media img {
-    aspect-ratio: 4096 / 825;
+    aspect-ratio: 4096 / 1300;
     object-fit: contain;
   }
 }
@@ -940,6 +951,7 @@ main > .hero:first-child {
 
 .pillar {
   display: grid;
+  background: var(--paper);
   padding: clamp(1.5rem, 5vw, 2.5rem);
   border: var(--hairline);
   column-gap: var(--col-gap);
@@ -1004,6 +1016,159 @@ main > .hero:first-child {
 .pillar--photo img {
   height: 100%;
   object-fit: cover;
+}
+
+/* -----------------------------------------------------------------------------
+   13b. TESTIMONIAL CAROUSEL
+   Colour block bleeding off the left edge, portrait, quote, then a progress
+   bar and a pair of stepper buttons. Without JavaScript every quote is simply
+   stacked and readable; the carousel is an enhancement on top.
+   -------------------------------------------------------------------------- */
+
+.testimonial {
+  position: relative;
+  padding-block: var(--section-pad) 0;
+}
+
+.testimonial__bleed {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: clamp(2rem, 12vw, 18rem);
+  height: 100%;
+  background: var(--green);
+}
+
+.testimonial__notice {
+  max-width: 90rem;
+  margin-inline: auto;
+  margin-block: 0 2rem;
+  margin-left: clamp(2rem, 12vw, 18rem);
+  margin-right: var(--gutter);
+}
+
+.testimonial__viewport {
+  max-width: 90rem;
+  margin-inline: auto;
+  padding-left: clamp(2rem, 12vw, 18rem);
+  padding-right: var(--gutter);
+}
+
+.testimonial__slide {
+  display: grid;
+  margin: 0;
+  gap: var(--gutter);
+  grid-template-columns: 1fr;
+}
+
+@media (width >= 48rem) {
+  .testimonial__slide {
+    gap: clamp(1.5rem, 5vw, 4rem);
+    grid-template-columns: 18rem minmax(0, 1fr);
+  }
+}
+
+.testimonial__portrait {
+  overflow: hidden;
+  width: min(100%, 18rem);
+  aspect-ratio: 2 / 3;
+  background: var(--wash);
+  grid-row: span 2;
+}
+
+.testimonial__portrait img {
+  height: 100%;
+  object-fit: cover;
+}
+
+.testimonial__quote {
+  margin: 0;
+  align-self: center;
+}
+
+.testimonial__mark {
+  display: block;
+  margin-bottom: 1rem;
+  font-family: var(--font-display);
+  font-size: var(--fs-heading);
+  line-height: 1;
+}
+
+.testimonial__quote p {
+  max-width: 46ch;
+  font-size: clamp(1.05rem, 1.6vw, 1.35rem);
+  line-height: 1.5;
+}
+
+.testimonial__slide figcaption {
+  align-self: start;
+}
+
+.testimonial__name {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: var(--wt-display);
+}
+
+.testimonial__role {
+  display: block;
+  font-size: var(--fs-fine);
+}
+
+/* Controls: a yellow progress bar that fills as you step through, then the
+   two stepper buttons, flush right. */
+.testimonial__controls {
+  display: flex;
+  max-width: 90rem;
+  align-items: stretch;
+  margin-inline: auto;
+  margin-top: var(--section-pad);
+  padding-left: clamp(2rem, 12vw, 18rem);
+  border-top: var(--hairline);
+}
+
+.testimonial__progress {
+  flex: 1;
+  height: 3rem;
+  background: var(--wash);
+}
+
+.testimonial__progress span {
+  display: block;
+  width: 20%;
+  height: 100%;
+  background: var(--yellow);
+  transition: width var(--dur-fast) var(--ease-out);
+}
+
+.testimonial__btn {
+  display: grid;
+  width: 3.75rem;
+  min-height: 44px;
+  border: 0;
+  border-left: var(--hairline);
+  background: transparent;
+  cursor: pointer;
+  font-size: 1.1rem;
+  place-items: center;
+  transition: background-color var(--dur-fast) ease;
+}
+
+.testimonial__btn:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* Only once the script confirms it is running does the viewport become a
+   single-slide window. */
+.js-carousel .testimonial__viewport {
+  position: relative;
+}
+
+.js-carousel .testimonial__slide[hidden] {
+  display: none;
 }
 
 /* -----------------------------------------------------------------------------
