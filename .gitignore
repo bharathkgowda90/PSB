@@ -1,0 +1,22 @@
+# Dev toolchain dependencies — restore with `npm install` in .claude/tools/
+.claude/tools/node_modules/
+
+# Machine-local Claude settings
+.claude/settings.local.json
+
+# Build output
+dist/
+
+# Original photos are large; keep them out of git unless the school wants them versioned
+site/assets/img/_raw/
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+.idea/
+
+# Logs
+*.log
+npm-debug.log*

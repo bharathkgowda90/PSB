@@ -1,0 +1,27 @@
+{
+  "name": "psb-dev-tools",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Build/QA toolchain for the PSB school website. Lives entirely inside .claude/ so it can be deleted before publishing.",
+  "scripts": {
+    "dev": "serve ../../site -l 3000",
+    "format": "prettier --config prettier.config.json --ignore-path .prettierignore --write \"../../site/**/*.{html,css,js,json}\"",
+    "format:check": "prettier --config prettier.config.json --ignore-path .prettierignore --check \"../../site/**/*.{html,css,js,json}\"",
+    "lint:html": "html-validate --config htmlvalidate.config.json \"../../site/**/*.html\"",
+    "lint:css": "stylelint --config stylelint.config.json \"../../site/assets/css/**/*.css\"",
+    "images": "node scripts/optimize-images.mjs",
+    "check": "node scripts/check.mjs",
+    "build": "node scripts/build.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "html-validate": "^9.0.0",
+    "lightningcss": "^1.30.0",
+    "prettier": "^3.4.0",
+    "serve": "^14.2.0",
+    "sharp": "^0.35.0",
+    "stylelint": "^16.0.0",
+    "stylelint-config-standard": "^38.0.0"
+  }
+}
