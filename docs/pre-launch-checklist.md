@@ -1,0 +1,134 @@
+# Pre-launch checklist
+
+The site is built and passes its quality gates, but **it must not go live in its
+current state.** This is everything standing between here and launch.
+
+Grep the site for remaining gaps at any time:
+
+```bash
+grep -rn "To be supplied\|To be confirmed\|TODO\|SAMPLE DATA" site/_pages site/_layout | wc -l
+```
+
+---
+
+## 1. Blockers — the site is harmful or broken without these
+
+| # | Item | Where | Why it blocks |
+|---|---|---|---|
+| 1 | **Replace the invented faculty list** | `site/_pages/faculty.html` | All 20 names, qualifications and years of experience are fabricated. Publishing invented teacher qualifications misleads parents making a decision about their child, and is exactly what a verifying official checks. |
+| 2 | **Replace the invented bus routes** | `site/_pages/transport.html` | All 15 routes, villages and timings are made up. A parent could plan around a bus that does not exist. |
+| 3 | **Register a domain and set the real origin** | `site/_layout/site.config.json`, `site/robots.txt`, `site/sitemap.xml` | Currently `https://TODO-domain-not-yet-registered.example`. Canonical tags, Open Graph URLs and the sitemap are all wrong until this is set. |
+| 4 | **Connect the enquiry form** | `site/_pages/enquiry.html` | The form has `action="#"` and goes nowhere. Every enquiry sent through it is silently lost. See §4. |
+| 5 | **Confirm the email address** | throughout | `psb@gmail.com` is almost certainly not a real inbox — that address would have been registered years ago. Verify it or replace it. |
+| 6 | **Real photographs, with consent** | `site/assets/img/_raw/` | Only a generated placeholder exists. No photograph of an identifiable child may be published without written consent from that child's family. |
+| 7 | **Verify the recognition number** | `site/_pages/disclosure.html`, footer | `29220204201` is published as fact on the disclosure page. Confirm it is correct and current. |
+
+---
+
+## 2. Content the school still owes
+
+Roughly 40 marked gaps remain. In priority order:
+
+**Highest value — these change enrolment decisions**
+- SSLC results for the last 3–5 years (`results.html`)
+- Student numbers, teacher numbers, class sizes, teacher:student ratio
+- Age criteria and cut-off date for each entry class (`admissions.html`)
+- Office hours, including Saturday
+- Real bus routes and the villages served
+
+**Trust and verification**
+- Principal's message, photo, name and qualification (`leadership.html`)
+- Society registration number, date and office-bearers (`society.html`)
+- Recognition, safety, fire and sanitation certificates as PDFs (`disclosure.html`)
+- Infrastructure counts: classrooms, labs, computers, library books, toilets
+
+**Completes the picture**
+- Vision and mission, founding story, milestones (`about.html`)
+- Lab equipment lists and computer counts (`science-technology.html`)
+- Academic calendar dates (`calendar.html`)
+- Sports, clubs and events actually offered (`student-life.html`)
+- Fee inclusions, payment methods, instalments, concessions (`fees.html`)
+
+---
+
+## 3. A WhatsApp number is missing
+
+`082322 98195` is a landline (Maddur STD code 08232) and cannot receive
+WhatsApp. In this catchment WhatsApp would likely become the most-used contact
+route, so a mobile number is worth obtaining before launch. The markup and copy
+are already in place — only the number is missing.
+
+---
+
+## 4. Connecting the enquiry form
+
+The site is static, so it cannot process a form by itself. Options:
+
+| Option | Effort | Notes |
+|---|---|---|
+| **Hosted form service** (Formspree, Netlify Forms) | Low | Set `action` to the service endpoint, point its redirect at `/admissions/enquiry/thank-you/`. Free tiers usually suffice at this volume. |
+| **WhatsApp link only** | Lowest | No infrastructure, and the lowest friction for this audience — but needs a mobile number, and nothing is recorded. |
+| **Serverless function** | Higher | Full control, needs hosting and maintenance. |
+
+**Recommendation:** a hosted form service *and* a prominent WhatsApp link, so
+there are two independent paths and one failing does not lose the enquiry.
+
+The honeypot field (`name="website"`) is already in place — configure the
+service to reject submissions where it is non-empty.
+
+**After connecting, submit a real test enquiry and confirm it arrives.** Then
+re-test on the live domain, because mail routing often differs from staging.
+A silently broken enquiry form loses admissions for months before anyone notices.
+
+---
+
+## 5. Decide before launch, not after
+
+**Fee amounts.** The school asked not to publish them, and the site respects
+that. Worth reconsidering: a parent who cannot find any figure often assumes the
+school is beyond their means and never calls. Even a band per stage keeps those
+families in the conversation.
+
+**Kannada.** The site is English-only. For a rural Mandya catchment a Kannada
+version — at minimum Home, Admissions, Fees and Contact — would widen reach
+considerably. This is far cheaper to do now than to retrofit.
+
+**Who owns the news page.** `news.html` is deliberately switched off. A news
+section whose latest item is two years old is worse than none. Name a person who
+will keep it current, or delete the page and its nav links.
+
+---
+
+## 6. Technical steps at launch
+
+- [ ] Domain registered and DNS pointed at the host
+- [ ] `site.config.json`, `robots.txt`, `sitemap.xml` updated with the real origin
+- [ ] HTTPS enabled and HTTP redirecting to it
+- [ ] `www` and non-`www` resolve, one redirecting to the other
+- [ ] `npm run check` passes
+- [ ] `npm run build` and deploy **`dist/` only**
+- [ ] Google Business Profile claimed; name, address and phone match the site character for character
+- [ ] Sitemap submitted in Google Search Console
+- [ ] Homepage opened on a real phone over mobile data, not office wifi
+- [ ] Enquiry form tested end to end on the live domain
+
+---
+
+## 7. Already verified
+
+These were checked during the build and need no further work:
+
+- All 25 pages generate, with no broken internal links
+- HTML validity and the WCAG rule set pass on every page
+- CSS lint and formatting pass
+- No horizontal overflow at 390px, 1280px, or full-page desktop
+- Keyboard: skip link is the first tab stop; the mobile menu opens, closes on
+  Escape, and returns focus to its button
+- Hero button contrast fixed after a visual check caught blue-on-dark-blue
+- Homepage payload is ~37 KB total (HTML + CSS + JS + hero), against a 1 MB budget
+- `dist/` excludes build inputs (`_layout`, `_pages`) and photo originals (`_raw`)
+- No `.claude/` references in the built output
+
+Note that contrast was verified on the hero specifically. A full contrast audit
+across every component pairing has not been done, and should be once real
+photographs are in place behind text.

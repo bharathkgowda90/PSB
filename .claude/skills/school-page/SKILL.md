@@ -5,32 +5,45 @@ description: Create or edit a page on the PSB school website so it matches the s
 
 # Building a page on the school site
 
-The site is plain static HTML/CSS/JS. There is no framework and no build-time
-templating — every page carries its own full shell. That means consistency is
-maintained by copying the shell exactly, not by editing a layout file.
+The site is plain static HTML/CSS/JS with no runtime framework. Pages are
+**generated** from a single shell plus per-page content fragments, and the
+generated HTML is committed — so `site/` stays plain static files any host can
+serve, while the shell exists in exactly one place and cannot drift.
 
 ## Where things live
 
 ```
-site/                     the web root — everything published comes from here
-  index.html
-  about/                  about the school, leadership, affiliation
-  academics/              curriculum by stage
-  admissions/
-  student-life/
-  contact/
+site/                     the web root
+  _layout/
+    shell.html            the one and only page shell
+    site.config.json      school facts: name, address, phone, origin
+  _pages/
+    pages.json            every page: path, title, description, breadcrumbs
+    *.html                content fragments (what goes inside <main>)
+  index.html              GENERATED — do not hand-edit
+  about/ academics/ …     GENERATED — do not hand-edit
   assets/
-    css/                  site.css + per-section files
-    js/
+    css/site.css
+    js/site.js
     img/
-      _raw/               originals, never published
-  _partials/              reference copies of the shell (see below)
+      _raw/               photo originals, never published
 ```
 
-`site/_partials/` holds the canonical `header.html`, `nav.html`, and
-`footer.html`. They are **reference copies**, not includes. When the shell
-changes, update the partial first, then propagate to every page. Never let a
-page's shell drift from the partial.
+Directories beginning with `_` are build inputs and are excluded from `dist/`.
+
+## Never hand-edit a generated page
+
+Editing `site/about/index.html` directly is wasted work — the next
+`npm run pages` overwrites it. Change the fragment in `site/_pages/`, or the
+shell in `site/_layout/`, then regenerate:
+
+```bash
+cd .claude/tools && npm run pages
+```
+
+Adding a page means adding both a fragment and an entry in `pages.json`. The
+generator fails the build on a missing fragment, an orphan fragment, a duplicate
+`<title>`, or a description over 165 characters.
 
 ## The grade taxonomy
 
@@ -51,42 +64,41 @@ Write "Class 1", not "Class-1", "class 1", "Grade 1", or "1st Standard".
 Write "Pre-KG", not "Pre KG" or "PreKG". Write "LKG" and "UKG" uppercase and
 unpunctuated, never "L.K.G." or "Lower KG".
 
-## Page skeleton
+## Fragment skeleton
 
-Every page starts from this. Fill the four marked slots; leave everything else
-byte-identical to the other pages.
+A fragment contains only what goes inside `<main>` after the breadcrumbs. The
+shell supplies `<head>`, header, nav, breadcrumbs and footer.
 
 ```html
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title><!-- PAGE TITLE --> | PSB School</title>
-    <meta name="description" content="<!-- 150-160 CHAR SUMMARY -->" />
-    <link rel="stylesheet" href="/assets/css/site.css" />
-    <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml" />
-  </head>
-  <body>
-    <a class="skip-link" href="#main">Skip to main content</a>
-    <!-- header + nav: copy verbatim from site/_partials/ -->
-    <main id="main">
-      <nav class="breadcrumbs" aria-label="Breadcrumb">
-        <!-- BREADCRUMB TRAIL -->
-      </nav>
-      <h1><!-- PAGE HEADING, matches the title --></h1>
-      <!-- PAGE CONTENT -->
-    </main>
-    <!-- footer: copy verbatim from site/_partials/footer.html -->
-  </body>
-</html>
+<section class="page-head">
+  <div class="wrap">
+    <h1>Page heading</h1>
+    <p>One sentence saying what this page answers.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <h2>First real section</h2>
+    <p>…</p>
+  </div>
+</section>
 ```
+
+Every fragment needs exactly one `<h1>`, and every block needs a `.wrap` inside
+it for the page's max width and gutters.
+
+Use `.placeholder` with a `.placeholder__tag` for anything the school has not
+yet supplied. It renders as a loud dashed red box that cannot be mistaken for
+real information — which is the point.
 
 ## Rules that the linters enforce
 
 - Exactly one `<h1>` per page, and heading levels never skip (`h1` → `h2` → `h3`).
 - Every page is reachable from the main nav or from a parent section page.
   An orphan page is a bug even though no linter catches it — check by hand.
+- Link text inside a `tel:` link uses `&nbsp;` for every space, not just inside
+  the number — html-validate's `tel-non-breaking` rule flags all of them.
 - Every `<img>` needs a meaningful `alt`; decorative images get `alt=""`.
 - Interactive controls are `<a>` or `<button>`, never a clickable `<div>`.
 - Internal links are root-relative (`/academics/primary/`), never relative
@@ -98,9 +110,13 @@ Run the gates from `.claude/tools/`:
 
 ```bash
 cd .claude/tools
-npm run check      # HTML validity + WCAG rules + CSS lint + formatting
+npm run pages      # regenerate pages from _layout + _pages
+npm run check      # regenerate, format, then HTML + WCAG + CSS gates
 npm run dev        # preview at http://localhost:3000
 ```
+
+`check` and `build` regenerate and format first, so a stale generated page can
+never pass the gates.
 
 Fix what `check` reports before moving on. A page that fails the gates is not
 done, regardless of how it looks in the browser.

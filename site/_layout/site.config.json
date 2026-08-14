@@ -1,0 +1,46 @@
+{
+  "_comment": "Single source of truth for school facts. Values marked TODO are unconfirmed and must be replaced before launch. Grep for TODO across site/ to find every use.",
+
+  "school": {
+    "name": "Prashanth High School of Brilliance",
+    "shortName": "Prashanth High School",
+    "society": "Snehanjali Rural Education Society (R.)",
+    "established": 2002,
+    "tagline": "A School with Science & Technology",
+    "board": "Karnataka State Board (SSLC)",
+    "recognitionNumber": "29220204201",
+    "medium": "English",
+    "stages": "Pre-School to Class 10"
+  },
+
+  "contact": {
+    "addressLines": [
+      "K.M. Doddi (Bharathinagar)",
+      "Maddur - Malavalli Road, SH-33",
+      "Maddur Taluk, Mandya District",
+      "Karnataka 571422"
+    ],
+    "locality": "K.M. Doddi",
+    "region": "Karnataka",
+    "postalCode": "571422",
+    "country": "IN",
+    "phoneDisplay": "082322 98195",
+    "phoneHref": "+918232298195",
+    "phoneNote": "Landline - office hours only",
+    "whatsapp": "TODO-whatsapp-mobile-number",
+    "email": "psb@gmail.com",
+    "mapUrl": "https://maps.app.goo.gl/huiRP8kwPaQ6HvJR7",
+    "officeHours": "TODO confirm office hours"
+  },
+
+  "site": {
+    "origin": "https://TODO-domain-not-yet-registered.example",
+    "locale": "en_IN",
+    "lang": "en"
+  },
+
+  "admissions": {
+    "cycle": "2026-27",
+    "windowNote": "Admissions usually open after the annual examinations, in March and April."
+  }
+}

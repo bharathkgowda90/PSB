@@ -55,8 +55,9 @@ Run from `.claude/tools/`:
 
 ```bash
 npm install         # restore node_modules
+npm run pages       # regenerate site pages from _layout + _pages
 npm run dev         # preview the site at http://localhost:3000
-npm run check       # HTML + WCAG + CSS + formatting gates
+npm run check       # regenerate, format, then HTML + WCAG + CSS gates
 npm run format      # auto-fix formatting
 npm run images      # generate responsive WebP/JPEG from site/assets/img/_raw/
 npm run build       # produce dist/, minified, with a .claude/ leak check
@@ -65,16 +66,20 @@ npm run build       # produce dist/, minified, with a .claude/ leak check
 ## Site layout the tooling assumes
 
 ```
-site/                web root — the only thing that gets published
+site/                web root
+  _layout/           shell.html + site.config.json  (build input)
+  _pages/            pages.json + content fragments (build input)
+  index.html, …      GENERATED pages — do not hand-edit
   assets/css|js|img
-  _partials/         reference copies of header, nav, footer
   assets/img/_raw/   original photos, never published
-dist/                build output, generated
+dist/                build output, published
+docs/                website plan and pre-launch checklist
 .claude/             this folder, deleted at handover
 ```
 
-This layout is provisional until the site plan is agreed; the tooling paths in
-`tools/package.json` and `tools/scripts/` need updating together if it changes.
+Underscore-prefixed directories are build inputs and are excluded from `dist/`.
+Pages are generated so the shell lives in one place and cannot drift; the
+generated HTML is committed, so `site/` remains plain static files.
 
 ## Skill precedence
 

@@ -27,13 +27,15 @@ if (!existsSync(SITE)) {
 await rm(DIST, { recursive: true, force: true });
 await mkdir(DIST, { recursive: true });
 
-// Never ship raw originals or dotfiles.
+// Never ship dotfiles, or any underscore-prefixed working directory:
+// _layout and _pages are build inputs and assets/img/_raw holds originals.
+// None of them belong on the public site.
 await cp(SITE, DIST, {
   recursive: true,
   filter: (src) => {
     const base = path.basename(src);
     if (base.startsWith(".")) return false;
-    if (base === "_raw") return false;
+    if (base.startsWith("_")) return false;
     return true;
   },
 });

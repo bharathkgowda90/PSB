@@ -1,0 +1,155 @@
+<section class="page-head">
+  <div class="wrap">
+    <h1>Admission enquiry</h1>
+    <p>
+      Fill in this short form and the school office will call you back. Every field except your name
+      and phone number is optional.
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="grid grid--2">
+      <div>
+        <div class="placeholder">
+          <span class="placeholder__tag">Form not connected yet</span>
+          <p>
+            This form has no destination until a form handler is set up. Submitting it now does
+            nothing. See the pre-launch checklist for the options &mdash; until this is connected
+            and tested end to end, every enquiry sent through it is lost silently.
+          </p>
+        </div>
+
+        <form class="form" action="#" method="post" novalidate>
+          <div class="field">
+            <label for="parent-name">Your name <span aria-hidden="true">*</span></label>
+            <input type="text" id="parent-name" name="parent-name" autocomplete="name" required />
+          </div>
+
+          <div class="field">
+            <label for="phone">Phone number <span aria-hidden="true">*</span></label>
+            <span class="hint" id="phone-hint">We will call you back on this number.</span>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              autocomplete="tel"
+              inputmode="tel"
+              aria-describedby="phone-hint"
+              required
+            />
+          </div>
+
+          <div class="field field--check">
+            <input type="checkbox" id="whatsapp" name="whatsapp" value="yes" />
+            <label for="whatsapp">This number is on WhatsApp</label>
+          </div>
+
+          <div class="field">
+            <label for="child-name">Child's name</label>
+            <input type="text" id="child-name" name="child-name" />
+          </div>
+
+          <div class="field">
+            <label for="class-sought">Class you are asking about</label>
+            <select id="class-sought" name="class-sought">
+              <option value="">Please choose</option>
+              <option>Pre-School</option>
+              <option>Pre-KG</option>
+              <option>LKG</option>
+              <option>UKG</option>
+              <option>Class 1</option>
+              <option>Class 2</option>
+              <option>Class 3</option>
+              <option>Class 4</option>
+              <option>Class 5</option>
+              <option>Class 6</option>
+              <option>Class 7</option>
+              <option>Class 8</option>
+              <option>Class 9</option>
+              <option>Class 10</option>
+              <option>Not sure yet</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="village">Your village or area</label>
+            <span class="hint" id="village-hint">
+              So we can tell you whether a school bus comes your way.
+            </span>
+            <input type="text" id="village" name="village" aria-describedby="village-hint" />
+          </div>
+
+          <div class="field">
+            <label for="best-time">Best time to call</label>
+            <select id="best-time" name="best-time">
+              <option value="">Any time during office hours</option>
+              <option>Morning</option>
+              <option>Afternoon</option>
+              <option>Evening</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="message">Anything you would like to ask</label>
+            <textarea id="message" name="message" rows="4"></textarea>
+          </div>
+
+          <!-- Honeypot. A person never sees this; naive bots fill it in. -->
+          <div class="hp" aria-hidden="true">
+            <label for="website">Leave this field empty</label>
+            <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <button class="btn btn--accent" type="submit">Send enquiry</button>
+        </form>
+      </div>
+
+      <div>
+        <h2>Or reach us directly</h2>
+        <p>You do not have to use the form. Any of these works just as well.</p>
+        <ul class="tick-list">
+          <li>
+            <strong>Telephone</strong><br />
+            <a href="tel:+918232298195">082322&nbsp;98195</a> during office hours
+          </li>
+          <li>
+            <strong>Email</strong><br />
+            <a href="mailto:psb@gmail.com">psb@gmail.com</a>
+          </li>
+          <li>
+            <strong>Visit</strong><br />
+            Come to the school office. You are welcome to look around the classrooms and
+            laboratories.
+          </li>
+        </ul>
+
+        <div class="placeholder">
+          <span class="placeholder__tag">WhatsApp number needed</span>
+          <p>
+            A WhatsApp link belongs here, and in this area it would probably become the most-used
+            way of getting in touch. The number on file, 082322&nbsp;98195, is a landline and cannot
+            take WhatsApp. A mobile number is needed before this can be added.
+          </p>
+        </div>
+
+        <h2>What happens next</h2>
+        <ol class="steps">
+          <li>
+            <strong>We call you back</strong>
+            Usually within a working day.
+          </li>
+          <li>
+            <strong>You visit the school</strong>
+            See the place for yourself and ask whatever you want to ask.
+          </li>
+          <li>
+            <strong>You decide</strong>
+            No obligation. An enquiry is not an application.
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>

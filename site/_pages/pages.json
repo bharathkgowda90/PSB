@@ -1,0 +1,222 @@
+{
+  "_comment": "Every page on the site. build-pages.mjs assembles each one from _layout/shell.html plus the named fragment. Titles and descriptions must be unique; the build fails otherwise.",
+  "pages": [
+    {
+      "path": "/",
+      "file": "home.html",
+      "h1": "Home",
+      "title": "Prashanth High School of Brilliance | K.M. Doddi, Maddur",
+      "description": "English medium school in K.M. Doddi (Bharathinagar), Maddur taluk, Mandya. Pre-School to Class 10, Karnataka State Board. Established 2002.",
+      "headExtra": "<script type=\"application/ld+json\">{\"@context\":\"https://schema.org\",\"@type\":\"School\",\"name\":\"Prashanth High School of Brilliance\",\"description\":\"English medium school teaching Pre-School to Class 10 under the Karnataka State Board, established 2002.\",\"foundingDate\":\"2002\",\"parentOrganization\":{\"@type\":\"Organization\",\"name\":\"Snehanjali Rural Education Society (R.)\"},\"telephone\":\"+91-8232-298195\",\"email\":\"psb@gmail.com\",\"hasMap\":\"https://maps.app.goo.gl/huiRP8kwPaQ6HvJR7\",\"address\":{\"@type\":\"PostalAddress\",\"streetAddress\":\"K.M. Doddi (Bharathinagar), Maddur - Malavalli Road SH-33\",\"addressLocality\":\"Maddur\",\"addressRegion\":\"Karnataka\",\"postalCode\":\"571422\",\"addressCountry\":\"IN\"}}</script>"
+    },
+    {
+      "path": "/about/",
+      "file": "about.html",
+      "h1": "About our school",
+      "crumb": "About",
+      "title": "About Us | Prashanth High School",
+      "description": "A Karnataka State Board school serving villages around K.M. Doddi and Maddur since 2002, run by Snehanjali Rural Education Society."
+    },
+    {
+      "path": "/about/leadership/",
+      "file": "leadership.html",
+      "h1": "Principal and management",
+      "crumb": "Leadership",
+      "breadcrumbs": [{ "href": "/about/", "label": "About" }],
+      "title": "Principal & Management | Prashanth High School",
+      "description": "Meet the Principal and the management committee of Prashanth High School of Brilliance, K.M. Doddi, Maddur taluk."
+    },
+    {
+      "path": "/about/society/",
+      "file": "society.html",
+      "h1": "Snehanjali Rural Education Society (R.)",
+      "crumb": "Our society",
+      "breadcrumbs": [{ "href": "/about/", "label": "About" }],
+      "title": "Snehanjali Rural Education Society | Prashanth High School",
+      "description": "The registered society that founded and runs Prashanth High School of Brilliance in Maddur taluk, Mandya district."
+    },
+    {
+      "path": "/academics/",
+      "file": "academics.html",
+      "h1": "Academics",
+      "crumb": "Academics",
+      "title": "Academics | Pre-School to Class 10 | Prashanth High School",
+      "description": "Karnataka State Board curriculum in English medium, from Pre-School through Class 10, across four stages of learning."
+    },
+    {
+      "path": "/academics/pre-primary/",
+      "file": "pre-primary.html",
+      "h1": "Pre-Primary",
+      "crumb": "Pre-Primary",
+      "breadcrumbs": [{ "href": "/academics/", "label": "Academics" }],
+      "title": "Pre-Primary: Pre-School to UKG | Prashanth High School",
+      "description": "Pre-School, Pre-KG, LKG and UKG at Prashanth High School. How we help young children settle in, play, and get ready for Class 1."
+    },
+    {
+      "path": "/academics/primary/",
+      "file": "primary.html",
+      "h1": "Primary: Class 1 to Class 5",
+      "crumb": "Primary",
+      "breadcrumbs": [{ "href": "/academics/", "label": "Academics" }],
+      "title": "Primary: Class 1 to Class 5 | Prashanth High School",
+      "description": "Reading, writing, mathematics and first science at Prashanth High School. Subjects, homework and assessment for Class 1 to Class 5."
+    },
+    {
+      "path": "/academics/middle/",
+      "file": "middle.html",
+      "h1": "Middle: Class 6 to Class 8",
+      "crumb": "Middle",
+      "breadcrumbs": [{ "href": "/academics/", "label": "Academics" }],
+      "title": "Middle: Class 6 to Class 8 | Prashanth High School",
+      "description": "Separate subject teachers, laboratory science and the computer programme for Class 6 to Class 8 at Prashanth High School, Maddur."
+    },
+    {
+      "path": "/academics/secondary/",
+      "file": "secondary.html",
+      "h1": "Secondary: Class 9 and Class 10",
+      "crumb": "Secondary",
+      "breadcrumbs": [{ "href": "/academics/", "label": "Academics" }],
+      "title": "Secondary: Class 9 and Class 10 | Prashanth High School",
+      "description": "SSLC preparation at Prashanth High School: subjects, practicals, revision, extra coaching and what comes after Class 10."
+    },
+    {
+      "path": "/academics/results/",
+      "file": "results.html",
+      "h1": "SSLC results",
+      "crumb": "Results",
+      "breadcrumbs": [{ "href": "/academics/", "label": "Academics" }],
+      "title": "SSLC Board Results | Prashanth High School",
+      "description": "Karnataka SSLC examination results for Prashanth High School of Brilliance, K.M. Doddi, Maddur taluk, Mandya district."
+    },
+    {
+      "path": "/admissions/",
+      "file": "admissions.html",
+      "h1": "Admissions 2026-27",
+      "crumb": "Admissions",
+      "title": "Admissions 2026-27 | Prashanth High School",
+      "description": "How to apply to Prashanth High School of Brilliance, Maddur. Age criteria, documents, the admission steps and who to contact."
+    },
+    {
+      "path": "/admissions/fees/",
+      "file": "fees.html",
+      "h1": "School fees",
+      "crumb": "Fees",
+      "breadcrumbs": [{ "href": "/admissions/", "label": "Admissions" }],
+      "title": "School Fees | Prashanth High School",
+      "description": "What the fee at Prashanth High School covers, how it varies by class, payment schedule and who to contact for the exact amount."
+    },
+    {
+      "path": "/admissions/enquiry/",
+      "file": "enquiry.html",
+      "h1": "Admission enquiry",
+      "crumb": "Enquiry",
+      "breadcrumbs": [{ "href": "/admissions/", "label": "Admissions" }],
+      "title": "Admission Enquiry Form | Prashanth High School",
+      "description": "Send an admission enquiry to Prashanth High School of Brilliance, K.M. Doddi, Maddur. We will call you back during office hours."
+    },
+    {
+      "path": "/admissions/enquiry/thank-you/",
+      "file": "thank-you.html",
+      "h1": "Thank you - we have your enquiry",
+      "crumb": "Thank you",
+      "breadcrumbs": [
+        { "href": "/admissions/", "label": "Admissions" },
+        { "href": "/admissions/enquiry/", "label": "Enquiry" }
+      ],
+      "title": "Enquiry Received | Prashanth High School",
+      "description": "Your admission enquiry has reached Prashanth High School of Brilliance. Here is what happens next and how to reach us sooner.",
+      "headExtra": "<meta name=\"robots\" content=\"noindex\" />"
+    },
+    {
+      "path": "/campus/",
+      "file": "campus.html",
+      "h1": "Campus and facilities",
+      "crumb": "Campus",
+      "title": "Campus & Facilities | Prashanth High School",
+      "description": "Classrooms, laboratories, library, playground, drinking water, sanitation and safety at Prashanth High School, K.M. Doddi, Maddur."
+    },
+    {
+      "path": "/campus/science-technology/",
+      "file": "science-technology.html",
+      "h1": "Science and technology",
+      "crumb": "Science & Technology",
+      "breadcrumbs": [{ "href": "/campus/", "label": "Campus" }],
+      "title": "Science & Technology | Prashanth High School",
+      "description": "Laboratories, the computer room and what students actually build. The science and technology programme at Prashanth High School."
+    },
+    {
+      "path": "/campus/transport/",
+      "file": "transport.html",
+      "h1": "School bus routes",
+      "crumb": "Transport",
+      "breadcrumbs": [{ "href": "/campus/", "label": "Campus" }],
+      "title": "School Bus Routes & Transport | Prashanth High School",
+      "description": "Village pickup routes, timings and bus safety for Prashanth High School of Brilliance, K.M. Doddi, Maddur taluk, Mandya."
+    },
+    {
+      "path": "/student-life/",
+      "file": "student-life.html",
+      "h1": "Student life",
+      "crumb": "Student Life",
+      "title": "Student Life | Prashanth High School",
+      "description": "The school day, assembly, sports, music, dance, clubs and annual events at Prashanth High School of Brilliance, Maddur."
+    },
+    {
+      "path": "/faculty/",
+      "file": "faculty.html",
+      "h1": "Our teachers",
+      "crumb": "Teachers",
+      "title": "Our Teachers | Prashanth High School",
+      "description": "The teaching team at Prashanth High School of Brilliance, K.M. Doddi, Maddur, with subjects, qualifications and experience."
+    },
+    {
+      "path": "/news/",
+      "file": "news.html",
+      "h1": "News and circulars",
+      "crumb": "News",
+      "title": "News & Circulars | Prashanth High School",
+      "description": "Circulars, holiday notices, events and achievements from Prashanth High School of Brilliance, K.M. Doddi, Maddur taluk."
+    },
+    {
+      "path": "/news/calendar/",
+      "file": "calendar.html",
+      "h1": "Academic calendar",
+      "crumb": "Calendar",
+      "breadcrumbs": [{ "href": "/news/", "label": "News" }],
+      "title": "Academic Calendar | Prashanth High School",
+      "description": "Term dates, holidays, examination dates and parent meeting dates for Prashanth High School of Brilliance, Maddur."
+    },
+    {
+      "path": "/gallery/",
+      "file": "gallery.html",
+      "h1": "Photo gallery",
+      "crumb": "Gallery",
+      "title": "Photo Gallery | Prashanth High School",
+      "description": "Photographs of the campus, classrooms, laboratories, sports and events at Prashanth High School of Brilliance, Maddur."
+    },
+    {
+      "path": "/contact/",
+      "file": "contact.html",
+      "h1": "Contact us",
+      "crumb": "Contact",
+      "title": "Contact Us | Prashanth High School, Maddur",
+      "description": "Address, phone number, email and directions to Prashanth High School of Brilliance, K.M. Doddi (Bharathinagar), Maddur taluk."
+    },
+    {
+      "path": "/disclosure/",
+      "file": "disclosure.html",
+      "h1": "Mandatory public disclosure",
+      "crumb": "Disclosure",
+      "title": "Mandatory Public Disclosure | Prashanth High School",
+      "description": "Recognition, society registration, infrastructure, staff and student strength details for Prashanth High School of Brilliance."
+    },
+    {
+      "path": "/privacy/",
+      "file": "privacy.html",
+      "h1": "Privacy and photo policy",
+      "crumb": "Privacy",
+      "title": "Privacy & Photo Policy | Prashanth High School",
+      "description": "What we collect through the enquiry form, how we use it, and our policy on photographs of students at Prashanth High School."
+    }
+  ]
+}

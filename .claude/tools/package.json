@@ -8,11 +8,12 @@
     "dev": "serve ../../site -l 3000",
     "format": "prettier --config prettier.config.json --ignore-path .prettierignore --write \"../../site/**/*.{html,css,js,json}\"",
     "format:check": "prettier --config prettier.config.json --ignore-path .prettierignore --check \"../../site/**/*.{html,css,js,json}\"",
-    "lint:html": "html-validate --config htmlvalidate.config.json \"../../site/**/*.html\"",
-    "lint:css": "stylelint --config stylelint.config.json \"../../site/assets/css/**/*.css\"",
+    "lint:html": "html-validate --config htmlvalidate.config.json \"../../site/**/index.html\"",
+    "lint:css": "stylelint --fix --config stylelint.config.json \"../../site/assets/css/**/*.css\"",
     "images": "node scripts/optimize-images.mjs",
-    "check": "node scripts/check.mjs",
-    "build": "node scripts/build.mjs"
+    "check": "node scripts/build-pages.mjs && npm run --silent format && node scripts/check.mjs",
+    "build": "node scripts/build-pages.mjs && npm run --silent format && node scripts/build.mjs",
+    "pages": "node scripts/build-pages.mjs"
   },
   "devDependencies": {
     "esbuild": "^0.25.0",
