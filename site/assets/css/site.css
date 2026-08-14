@@ -413,11 +413,14 @@ strong {
   align-items: center;
   padding-inline: var(--gutter);
   font-family: var(--font-display);
-  max-width: 22ch;
   font-size: clamp(0.95rem, 2.6vw, 1.4rem);
   font-weight: var(--wt-display);
   line-height: 1.1;
   text-decoration: none;
+}
+
+.brand__label {
+  max-width: 22ch;
 }
 
 .brand:hover {
@@ -815,13 +818,7 @@ main {
 /* The flanking strips: a column of grid cells, some filled. */
 .hero__strip {
   display: grid;
-  grid-auto-rows: 2rem;
-}
-
-@media (width >= 48rem) {
-  .hero__strip {
-    grid-auto-rows: 4.5rem;
-  }
+  grid-auto-rows: 1fr;
 }
 
 .hero__strip span {
