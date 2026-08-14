@@ -15,17 +15,17 @@
 /* -----------------------------------------------------------------------------
    1. FONTS — self-hosted, no third-party request on any page view.
 
-   Instrument Serif stands in for Primer's licensed Sirca: a high-contrast
-   display serif that ships in a single 400 weight, matching the reference's
-   "book weight throughout, no bold anywhere in display type".
+   Playfair Display stands in for Primer's licensed Sirca: a high-contrast
+   display serif, variable 400-900. The reference sets headings noticeably
+   heavier than book weight, so --wt-display carries that.
    Lexend carries all running text in place of Söhne.
    -------------------------------------------------------------------------- */
 
 @font-face {
-  font-family: "Instrument Serif";
+  font-family: playfair;
   font-style: normal;
-  font-weight: 400;
-  src: url("/assets/fonts/instrument-serif-latin.woff2") format("woff2");
+  font-weight: 400 900;
+  src: url("/assets/fonts/playfair-latin.woff2") format("woff2");
   font-display: swap;
   unicode-range:
     U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
@@ -33,10 +33,10 @@
 }
 
 @font-face {
-  font-family: "Instrument Serif";
+  font-family: playfair;
   font-style: normal;
-  font-weight: 400;
-  src: url("/assets/fonts/instrument-serif-latin-ext.woff2") format("woff2");
+  font-weight: 400 900;
+  src: url("/assets/fonts/playfair-latin-ext.woff2") format("woff2");
   font-display: swap;
   unicode-range:
     U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
@@ -107,14 +107,15 @@ html {
   --wash: #f6f5f2;
 
   /* Type — two families, five steps, exactly as the reference. */
-  --font-display: "Instrument Serif", georgia, "Times New Roman", serif;
+  --font-display: playfair, georgia, "Times New Roman", serif;
   --font-text: lexend, "Segoe UI", system-ui, "Noto Sans Kannada", arial, sans-serif;
-  --fs-display: 3.5rem;
-  --fs-title: 2.5rem;
+  --fs-display: clamp(2.25rem, 7.5vw, 3.5rem);
+  --fs-title: clamp(1.9rem, 6vw, 2.5rem);
   --fs-heading: 1.75rem;
   --fs-body: 1rem;
   --fs-fine: 0.8rem;
-  --lh-tight: 1.2;
+  --wt-display: 600;
+  --lh-tight: 1.15;
   --lh-body: 1.55;
   --lh-fine: 1.5;
   --tracking: -0.01em;
@@ -163,9 +164,10 @@ h3,
 h4 {
   margin: 0 0 0.4em;
   font-family: var(--font-display);
-  font-weight: 400;
+  font-weight: var(--wt-display);
   letter-spacing: 0;
   line-height: var(--lh-tight);
+  overflow-wrap: break-word;
   text-wrap: balance;
 }
 
@@ -384,39 +386,37 @@ strong {
    -------------------------------------------------------------------------- */
 
 .site-header {
-  position: fixed;
+  position: relative;
   z-index: 100;
-  top: 0;
   width: 100%;
-  padding: var(--gutter);
-  pointer-events: none;
+  padding: var(--gutter) var(--gutter) 0;
   view-transition-name: site-header;
 }
 
 .site-header__inner {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--col-gap);
+  max-width: 90rem;
+  margin-inline: auto;
 }
 
+/* One bordered bar across the full content width: wordmark, colour mark,
+   actions, then the menu button — exactly as the reference. */
 .nav-box {
   display: flex;
   height: var(--nav-h);
   align-items: stretch;
   border: var(--hairline);
   background: var(--paper);
-  pointer-events: auto;
 }
 
 .brand {
   display: flex;
-  max-width: 15rem;
+  flex: 1;
   align-items: center;
-  padding-inline: 1rem;
+  padding-inline: 1.25rem;
   font-family: var(--font-display);
-  font-size: 1.35rem;
-  line-height: 1.05;
+  font-size: clamp(1.4rem, 5.5vw, 2rem);
+  font-weight: var(--wt-display);
+  line-height: 1;
   text-decoration: none;
 }
 
@@ -428,7 +428,7 @@ strong {
 .nav-mark {
   display: grid;
   border-left: var(--hairline);
-  grid-template-columns: repeat(3, 1.6rem);
+  grid-template-columns: repeat(2, calc(var(--nav-h) / 2));
   grid-template-rows: repeat(2, 1fr);
 }
 
@@ -489,9 +489,9 @@ strong {
 .nav-actions {
   display: none;
   align-items: center;
-  gap: var(--gutter);
-  height: var(--nav-h);
-  pointer-events: auto;
+  padding-inline: 1.25rem;
+  border-left: var(--hairline);
+  gap: 1.25rem;
 }
 
 .nav-actions > a:not(.btn) {
@@ -509,7 +509,7 @@ strong {
 /* The menu panel. Full-bleed sheet, opened from the nav box. */
 .primary-nav {
   position: fixed;
-  z-index: 99;
+  z-index: 120;
   overflow-y: auto;
   inset: 0;
   padding: calc(var(--nav-h) + var(--gutter) * 2) var(--gutter) var(--gutter);
@@ -555,9 +555,8 @@ strong {
   color: var(--blue);
 }
 
-/* Every page pushes its content clear of the floating nav. */
 main {
-  padding-top: calc(var(--nav-h) + var(--gutter) * 2);
+  padding-top: 0;
 }
 
 /* -----------------------------------------------------------------------------
@@ -677,11 +676,43 @@ main {
   inset: 0;
 }
 
+/* A full-width strip of the grid motif, three cells deep. Closes the page
+   under the final call to action, mirroring the hero's framing. */
+.motif-band {
+  display: grid;
+  width: 100%;
+  border-top: var(--hairline);
+  grid-auto-flow: column;
+  grid-auto-columns: 4.5rem;
+  grid-template-rows: repeat(3, 3rem);
+  overflow: hidden;
+}
+
+.motif-band span {
+  border-right: var(--hairline);
+  border-bottom: var(--hairline);
+}
+
+.motif-band .c-y {
+  background: var(--yellow);
+}
+
+.motif-band .c-b {
+  background: var(--blue);
+}
+
+.motif-band .c-o {
+  background: var(--orange);
+}
+
+.motif-band .c-g {
+  background: var(--green);
+}
+
 /* Full-bleed colour bands running past the viewport edge. */
 .band {
-  width: 100vw;
+  width: 100%;
   height: 3rem;
-  margin-inline: calc(50% - 50vw);
 }
 
 .band--blue {
@@ -702,57 +733,97 @@ main {
 
 /* -----------------------------------------------------------------------------
    10. HERO
+   A full-bleed cut-out photograph, then a bordered band whose centred copy is
+   flanked by vertical strips of the grid motif — the framing device the
+   reference uses to bookend its hero.
    -------------------------------------------------------------------------- */
 
 .hero {
-  position: relative;
-  padding-top: calc(var(--nav-h) + var(--gutter) * 2);
-  padding-bottom: var(--section-pad);
-}
-
-.hero__inner {
-  align-items: end;
-}
-
-.hero__copy {
-  grid-column: 1 / span 7;
-}
-
-.hero h1 {
-  font-size: var(--fs-display);
-  margin-bottom: 0.3em;
-}
-
-.hero__lead {
-  max-width: 38ch;
-  font-size: 1.125rem;
-}
-
-.hero__motif {
-  align-self: end;
-  grid-column: 9 / span 4;
+  padding: 0;
 }
 
 .hero__media {
-  margin-top: var(--section-pad);
-  grid-column: 1 / -1;
+  padding-inline: var(--gutter);
 }
 
 .hero__media img {
-  aspect-ratio: 16 / 6;
+  max-width: 90rem;
+  margin-inline: auto;
+  aspect-ratio: 16 / 9;
   object-fit: cover;
 }
 
-@media (width <= 62rem) {
-  .hero__copy,
-  .hero__motif,
-  .hero__media {
-    grid-column: 1 / -1;
+@media (width >= 48rem) {
+  .hero__media img {
+    aspect-ratio: 21 / 8;
   }
+}
 
-  .hero__motif {
-    margin-top: 2rem;
+.hero__band {
+  display: grid;
+  border-block: var(--hairline);
+  grid-template-columns: 2rem minmax(0, 1fr) 2rem;
+}
+
+@media (width >= 48rem) {
+  .hero__band {
+    grid-template-columns: 9rem minmax(0, 1fr) 9rem;
   }
+}
+
+.hero__copy {
+  padding: var(--section-pad) var(--gutter);
+  border-inline: var(--hairline);
+  text-align: center;
+}
+
+.hero h1 {
+  margin-inline: auto;
+  overflow-wrap: break-word;
+  font-size: var(--fs-display);
+  max-width: 16ch;
+}
+
+.hero__lead {
+  max-width: 34ch;
+  margin-inline: auto;
+  font-size: 1.125rem;
+}
+
+.hero .btn-row {
+  justify-content: center;
+}
+
+/* The flanking strips: a column of grid cells, some filled. */
+.hero__strip {
+  display: grid;
+  grid-auto-rows: 2rem;
+}
+
+@media (width >= 48rem) {
+  .hero__strip {
+    grid-auto-rows: 4.5rem;
+  }
+}
+
+.hero__strip span {
+  border-bottom: var(--hairline);
+}
+
+.hero__strip .c-y {
+  background: var(--yellow);
+}
+
+.hero__strip .c-b {
+  background: var(--blue);
+}
+
+.hero__strip .c-o {
+  background: var(--orange);
+}
+
+.hero__strip .c-g {
+  background: var(--green);
 }
 
 /* -----------------------------------------------------------------------------
@@ -835,47 +906,70 @@ main > .hero:first-child {
 }
 
 /* -----------------------------------------------------------------------------
-   13. PILLAR MOSAIC — numbered cards on a 4-up grid, one filled, some photo.
+   13. PILLAR CARDS
+   Number top-left, photograph top-right, then the title and body beneath —
+   the reference's card anatomy. Two up on wide screens, stacked on a phone.
    -------------------------------------------------------------------------- */
 
 .pillars {
   display: grid;
   gap: var(--col-gap);
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: 1fr;
+}
+
+@media (width >= 62rem) {
+  .pillars {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .pillar {
-  position: relative;
-  display: flex;
-  min-height: 24rem;
-  flex-direction: column;
-  padding: 1.5rem;
+  display: grid;
+  padding: clamp(1.5rem, 5vw, 2.5rem);
   border: var(--hairline);
-  gap: 0.75rem;
+  column-gap: var(--col-gap);
+  grid-template-columns: 1fr minmax(0, 9rem);
 }
 
 .pillar__no {
-  margin-bottom: auto;
-  font-size: var(--fs-fine);
-  letter-spacing: 0.1em;
+  font-size: var(--fs-body);
+  grid-column: 1;
+  grid-row: 1;
+  letter-spacing: 0.06em;
+}
+
+.pillar__media {
+  overflow: hidden;
+  aspect-ratio: 3 / 4;
+  grid-column: 2;
+  grid-row: 1 / span 2;
+}
+
+.pillar__media img {
+  height: 100%;
+  object-fit: cover;
 }
 
 .pillar__title {
-  margin: 0;
+  margin: 2.5rem 0 0.75rem;
   font-family: var(--font-display);
   font-size: var(--fs-heading);
+  grid-column: 1 / -1;
+  grid-row: 3;
 }
 
 .pillar p {
   margin: 0;
-  max-width: 30ch;
-  font-size: var(--fs-fine);
-  line-height: 1.6;
+  max-width: 46ch;
+  grid-column: 1 / -1;
+  grid-row: 4;
 }
 
 .pillar .card__link {
-  margin-top: 0;
-  padding-top: 0.5rem;
+  margin-top: 1.25rem;
+  padding-top: 0;
+  grid-column: 1 / -1;
+  grid-row: 5;
 }
 
 .pillar--fill {
@@ -883,31 +977,18 @@ main > .hero:first-child {
   background: var(--yellow);
 }
 
+/* A card that is only a photograph. */
 .pillar--photo {
+  display: block;
   overflow: hidden;
   padding: 0;
   border: 0;
+  min-height: 18rem;
 }
 
 .pillar--photo img {
   height: 100%;
   object-fit: cover;
-}
-
-@media (width <= 62rem) {
-  .pillars {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (width <= 34rem) {
-  .pillars {
-    grid-template-columns: 1fr;
-  }
-
-  .pillar {
-    min-height: 16rem;
-  }
 }
 
 /* -----------------------------------------------------------------------------
@@ -916,8 +997,7 @@ main > .hero:first-child {
 
 .marquee {
   overflow: hidden;
-  width: 100vw;
-  margin-inline: calc(50% - 50vw);
+  width: 100%;
   mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
 }
 
@@ -952,6 +1032,25 @@ main > .hero:first-child {
   to {
     transform: translateX(-50%);
   }
+}
+
+.cta-centre {
+  padding-inline: var(--gutter);
+  text-align: center;
+}
+
+.cta-centre h2 {
+  max-width: 20ch;
+  margin-inline: auto;
+}
+
+.cta-centre p {
+  max-width: 46ch;
+  margin-inline: auto;
+}
+
+.cta-centre .btn-row {
+  justify-content: center;
 }
 
 .statement {
@@ -1430,11 +1529,13 @@ tbody th {
 }
 
 .site-footer__wordmark {
-  margin: 0 0 2rem;
+  margin: 0 0 2.5rem;
   font-family: var(--font-display);
-  font-size: clamp(3rem, 11vw, 7.5rem);
+  font-size: clamp(3.5rem, 15vw, 9rem);
+  font-weight: var(--wt-display);
   grid-column: 1 / -1;
-  line-height: 0.95;
+  letter-spacing: -0.02em;
+  line-height: 0.9;
 }
 
 .site-footer__wordmark span {

@@ -1,5 +1,36 @@
 <section class="hero">
-  <div class="container hero__inner">
+  <div class="hero__media" data-reveal>
+    <picture>
+      <source
+        type="image/webp"
+        srcset="
+          /assets/img/hero-480.webp   480w,
+          /assets/img/hero-960.webp   960w,
+          /assets/img/hero-1600.webp 1600w
+        "
+        sizes="100vw"
+      />
+      <img
+        src="/assets/img/hero-1600.jpg"
+        width="1600"
+        height="600"
+        alt="Placeholder. A photograph of the school campus will replace this."
+        decoding="async"
+      />
+    </picture>
+  </div>
+
+  <div class="hero__band">
+    <span class="hero__strip" aria-hidden="true">
+      <span></span>
+      <span class="c-o"></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span class="c-y"></span>
+      <span></span>
+    </span>
+
     <div class="hero__copy" data-reveal>
       <span class="eyebrow">K.M. Doddi &middot; Maddur &middot; Since 2002</span>
       <h1>A school for the villages around K.M. Doddi.</h1>
@@ -9,53 +40,18 @@
       </p>
       <div class="btn-row">
         <a class="btn btn--solid" href="/admissions/enquiry/">Enquire about admission</a>
-        <a class="btn btn--outline" href="tel:+918232298195">Call&nbsp;082322&nbsp;98195</a>
       </div>
     </div>
 
-    <div class="hero__motif" data-reveal-stagger="45">
-      <span class="motif" aria-hidden="true">
-        <span></span>
-        <span class="c-y"></span>
-        <span></span>
-        <span></span>
-        <span class="c-b"></span>
-        <span></span>
-        <span class="c-o"></span>
-        <span></span>
-        <span class="c-diag"></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span class="c-b"></span>
-        <span></span>
-        <span class="c-g"></span>
-        <span class="c-y"></span>
-      </span>
-    </div>
-
-    <div class="hero__media" data-reveal>
-      <picture>
-        <source
-          type="image/webp"
-          srcset="
-            /assets/img/hero-480.webp   480w,
-            /assets/img/hero-960.webp   960w,
-            /assets/img/hero-1600.webp 1600w
-          "
-          sizes="100vw"
-        />
-        <img
-          src="/assets/img/hero-1600.jpg"
-          width="1600"
-          height="600"
-          alt="Placeholder. A photograph of the school campus will replace this."
-          decoding="async"
-        />
-      </picture>
-    </div>
+    <span class="hero__strip" aria-hidden="true">
+      <span class="c-g"></span>
+      <span class="c-g"></span>
+      <span class="c-g"></span>
+      <span class="c-g"></span>
+      <span class="c-g"></span>
+      <span class="c-g"></span>
+      <span class="c-g"></span>
+    </span>
   </div>
 </section>
 
@@ -167,31 +163,47 @@
     <div class="pillars" data-reveal-stagger="80" style="margin-top: 2.5rem">
       <article class="pillar">
         <span class="pillar__no">01</span>
+        <div class="pillar__media">
+          <picture>
+            <source
+              type="image/webp"
+              srcset="/assets/img/pillar-1-480.webp 480w, /assets/img/pillar-1-960.webp 960w"
+              sizes="9rem"
+            />
+            <img
+              src="/assets/img/pillar-1-960.jpg"
+              width="900"
+              height="1200"
+              alt="Placeholder photograph."
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
+        </div>
         <h3 class="pillar__title">Pre-Primary</h3>
         <p>Pre-School, Pre-KG, LKG and UKG. Settling in, play, and getting ready for Class 1.</p>
         <a class="card__link" href="/academics/pre-primary/">Read more</a>
       </article>
 
-      <article class="pillar pillar--photo">
-        <picture>
-          <source
-            type="image/webp"
-            srcset="/assets/img/pillar-1-480.webp 480w, /assets/img/pillar-1-960.webp 960w"
-            sizes="(max-width: 62rem) 50vw, 25vw"
-          />
-          <img
-            src="/assets/img/pillar-1-960.jpg"
-            width="900"
-            height="1200"
-            alt="Placeholder. A photograph of students at work will replace this."
-            loading="lazy"
-            decoding="async"
-          />
-        </picture>
-      </article>
-
-      <article class="pillar pillar--fill">
+      <article class="pillar">
         <span class="pillar__no">02</span>
+        <div class="pillar__media">
+          <picture>
+            <source
+              type="image/webp"
+              srcset="/assets/img/prop-1-480.webp 480w, /assets/img/prop-1-960.webp 960w"
+              sizes="9rem"
+            />
+            <img
+              src="/assets/img/prop-1-960.jpg"
+              width="900"
+              height="1200"
+              alt="Placeholder photograph."
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
+        </div>
         <h3 class="pillar__title">Primary</h3>
         <p>
           Class 1 to Class 5. Reading, writing and mathematics become secure, and children start
@@ -200,8 +212,25 @@
         <a class="card__link" href="/academics/primary/">Read more</a>
       </article>
 
-      <article class="pillar">
+      <article class="pillar pillar--fill">
         <span class="pillar__no">03</span>
+        <div class="pillar__media">
+          <picture>
+            <source
+              type="image/webp"
+              srcset="/assets/img/prop-2-480.webp 480w, /assets/img/prop-2-960.webp 960w"
+              sizes="9rem"
+            />
+            <img
+              src="/assets/img/prop-2-960.jpg"
+              width="900"
+              height="1200"
+              alt="Placeholder photograph."
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
+        </div>
         <h3 class="pillar__title">Middle</h3>
         <p>
           Class 6 to Class 8. Separate subject teachers, laboratory science, and projects that run
@@ -212,50 +241,29 @@
 
       <article class="pillar">
         <span class="pillar__no">04</span>
+        <div class="pillar__media">
+          <picture>
+            <source
+              type="image/webp"
+              srcset="/assets/img/pillar-2-480.webp 480w, /assets/img/pillar-2-960.webp 960w"
+              sizes="9rem"
+            />
+            <img
+              src="/assets/img/pillar-2-960.jpg"
+              width="900"
+              height="1200"
+              alt="Placeholder photograph."
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
+        </div>
         <h3 class="pillar__title">Secondary</h3>
         <p>
           Class 9 and Class 10. Steady preparation for the SSLC board examination, with extra help
           where it is needed.
         </p>
         <a class="card__link" href="/academics/secondary/">Read more</a>
-      </article>
-
-      <article class="pillar pillar--photo">
-        <picture>
-          <source
-            type="image/webp"
-            srcset="/assets/img/pillar-2-480.webp 480w, /assets/img/pillar-2-960.webp 960w"
-            sizes="(max-width: 62rem) 50vw, 25vw"
-          />
-          <img
-            src="/assets/img/pillar-2-960.jpg"
-            width="900"
-            height="1200"
-            alt="Placeholder. A photograph of the school assembly will replace this."
-            loading="lazy"
-            decoding="async"
-          />
-        </picture>
-      </article>
-
-      <article class="pillar">
-        <span class="pillar__no">05</span>
-        <h3 class="pillar__title">Admissions</h3>
-        <p>
-          Usually open after the annual examinations, in March and April. Enquiries welcome any time
-          of year.
-        </p>
-        <a class="card__link" href="/admissions/">The steps</a>
-      </article>
-
-      <article class="pillar">
-        <span class="pillar__no">06</span>
-        <h3 class="pillar__title">SSLC results</h3>
-        <p>
-          Published year by year, so families can see the record before deciding. Figures awaited
-          from the school.
-        </p>
-        <a class="card__link" href="/academics/results/">See results</a>
       </article>
     </div>
   </div>
@@ -392,38 +400,48 @@
 </section>
 
 <section class="section section--ink">
-  <div class="container">
-    <div class="col-heading" data-reveal>
-      <h2>Ask us about a place for your child.</h2>
-      <p>
-        Send an enquiry and the office will call you back, usually within a working day. You can
-        also telephone during office hours, or simply come to the school.
-      </p>
-      <div class="btn-row">
-        <a
-          class="btn btn--solid"
-          style="border-color: var(--paper); background: var(--paper); color: var(--ink)"
-          href="/admissions/enquiry/"
-          >Send an enquiry</a
-        >
-        <a class="btn btn--ghost" href="tel:+918232298195">Call&nbsp;082322&nbsp;98195</a>
-      </div>
-    </div>
-    <div class="col-aside" data-reveal-stagger="45">
-      <span class="motif" aria-hidden="true">
-        <span></span>
-        <span class="c-b"></span>
-        <span></span>
-        <span class="c-diag"></span>
-        <span></span>
-        <span class="c-y"></span>
-        <span class="c-g"></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span class="c-o"></span>
-        <span></span>
-      </span>
+  <div class="cta-centre" data-reveal>
+    <h2>Ask us about a place for your child.</h2>
+    <p>
+      Send an enquiry and the office will call you back, usually within a working day. You can also
+      telephone during office hours, or simply come to the school.
+    </p>
+    <div class="btn-row">
+      <a class="btn btn--ghost" href="/admissions/enquiry/">Send an enquiry</a>
+      <a class="btn btn--ghost" href="tel:+918232298195">Call&nbsp;082322&nbsp;98195</a>
     </div>
   </div>
 </section>
+
+<div class="motif-band" aria-hidden="true">
+  <span></span>
+  <span class="c-o"></span>
+  <span class="c-o"></span>
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+  <span class="c-y"></span>
+  <span></span>
+  <span class="c-g"></span>
+  <span class="c-g"></span>
+  <span class="c-g"></span>
+  <span></span>
+  <span></span>
+  <span></span>
+  <span class="c-b"></span>
+  <span></span>
+  <span></span>
+  <span></span>
+  <span class="c-g"></span>
+  <span class="c-g"></span>
+  <span></span>
+  <span class="c-y"></span>
+  <span></span>
+  <span></span>
+  <span class="c-g"></span>
+  <span class="c-g"></span>
+  <span></span>
+  <span></span>
+  <span></span>
+</div>

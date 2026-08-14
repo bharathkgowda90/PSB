@@ -120,6 +120,18 @@ const collect = function (LIMITS) {
     el.classList.contains("hp") ||
     el.classList.contains("visually-hidden");
 
+  /* An element inside a scroll or clip container is bounded by that container,
+     not the viewport, so viewport overflow does not apply to it. */
+  const clippedByAncestor = (el) => {
+    let node = el.parentElement;
+    while (node && node !== document.documentElement) {
+      const o = getComputedStyle(node);
+      if (/hidden|clip|auto|scroll/.test(o.overflowX + o.overflowY)) return true;
+      node = node.parentElement;
+    }
+    return false;
+  };
+
   /* 1. Page-level horizontal overflow. */
   const pageOver = document.documentElement.scrollWidth - vw;
   if (pageOver > 1) add("error", "overflow-page", `page scrolls ${pageOver}px sideways`);
@@ -129,8 +141,9 @@ const collect = function (LIMITS) {
   document.querySelectorAll("body *").forEach((el) => {
     const cs = getComputedStyle(el);
     if (cs.display === "none" || cs.visibility === "hidden" || cs.position === "fixed") return;
-    if (el.closest(".table-scroll, .marquee, [style*='overflow']")) return;
     if (parkedOffscreen(el)) return;
+    // Clipped by an ancestor, so it can never actually reach the viewport edge.
+    if (clippedByAncestor(el)) return;
     const r = el.getBoundingClientRect();
     if (r.width === 0) return;
     const past = Math.round(r.right - vw);
