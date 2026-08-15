@@ -60,6 +60,7 @@ pages.sort((a, b) => a.route.localeCompare(b.route));
 
 const home = await readFile(path.join(DIST, "index.html"), "utf8");
 const css = await readFile(path.join(DIST, "assets/css/site.css"), "utf8");
+const siteJs = await readFile(path.join(DIST, "assets/js/site.js"), "utf8");
 const header = home.match(/<header class="site-header">[\s\S]*?<\/header>/)[0];
 const footer = home.match(/<footer class="site-footer">[\s\S]*?<\/footer>/)[0];
 const navPanel = home.match(/<nav class="primary-nav"[\s\S]*?<\/nav>/)[0];
@@ -187,6 +188,10 @@ ${inlinedCss}
     ${shellFooter}
 
     <script>
+${siteJs}
+    </script>
+
+    <script>
       var PAGES = ${payload};
 
       var main = document.getElementById("main");
@@ -222,7 +227,10 @@ ${inlinedCss}
         });
 
         window.scrollTo(0, 0);
-        wireMaps();
+        // The router replaces main's content, so the site's own per-content
+        // initialisation has to run again for the newly injected markup.
+        if (window.PSBSite) window.PSBSite.initContent(main);
+        markMapsInert();
       }
 
       // Rewrite every internal link to a hash route, once, across the whole document.
@@ -234,14 +242,15 @@ ${inlinedCss}
         });
       }
 
-      // The real site loads a Google Maps iframe here. A hosted preview blocks
-      // external requests, so say so rather than fail silently.
-      function wireMaps() {
+      // A hosted preview cannot make external requests, so say so plainly
+      // rather than letting the map button fail silently.
+      function markMapsInert() {
         main.querySelectorAll(".map-facade").forEach(function (b) {
-          b.addEventListener("click", function () {
+          b.addEventListener("click", function (e) {
+            e.stopImmediatePropagation();
             b.outerHTML =
               '<div class="img-placeholder">Google Maps loads here on the real site.' +
-              '<br />External requests are blocked in this preview.</div>';
+              "<br />External requests are blocked in this preview.</div>";
           });
         });
       }
@@ -257,25 +266,6 @@ ${inlinedCss}
       });
       window.addEventListener("hashchange", render);
 
-      // Mobile nav, same behaviour as the real site.
-      var toggle = document.querySelector(".nav-toggle");
-      var nav = document.getElementById("primary-nav");
-      function setOpen(open) {
-        toggle.setAttribute("aria-expanded", String(open));
-        nav.classList.toggle("is-open", open);
-      }
-      toggle.addEventListener("click", function () {
-        setOpen(toggle.getAttribute("aria-expanded") !== "true");
-      });
-      document.addEventListener("keydown", function (e) {
-        if (e.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") {
-          setOpen(false);
-          toggle.focus();
-        }
-      });
-      nav.addEventListener("click", function (e) {
-        if (e.target.tagName === "A") setOpen(false);
-      });
 
       render();
     </script>

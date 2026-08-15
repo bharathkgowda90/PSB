@@ -91,6 +91,10 @@ Automation cannot see these. They still need a person:
 - Whether motion feels right, or merely runs.
 - Whether a floating element sitting over content *reads* as intentional.
   Geometrically the header is fine; whether it looks fine is a human call.
+- Anything only visible in the published preview. `npm run qa` measures the
+  real site in `dist/`, so a preview-only defect passes it. The preview now
+  runs the site's own `site.js` rather than a copy, which removes the usual
+  cause, but check the published artifact too before calling a change done.
 
 So report QA results as "0 errors, 0 warnings from `npm run qa`", never as
 "the design is verified".
