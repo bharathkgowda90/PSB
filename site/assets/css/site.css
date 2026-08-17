@@ -1050,10 +1050,16 @@ main > .hero:first-child {
   --rail: clamp(2rem, 8vw, 12rem);
   --rail-gap: clamp(1.5rem, 6vw, 4rem);
 
-  /* The section's own top padding is handed to the heading cell instead, so the
-     rule starts at the section's top edge and meets the section above it rather
-     than beginning partway down in mid-air. */
-  padding-top: 0;
+  /* No padding of its own. The top goes to the heading cell so the vertical rule
+     starts at the section's own top edge; the bottom goes away entirely so the
+     controls band closes the section. That leaves the section's two rules free
+     to run the full width, edge to edge, above and below everything. */
+  padding-block: 0;
+  border-block: var(--hairline);
+
+  /* The section above closes with a rule of its own. Pulling up by a pixel lands
+     the two on top of each other rather than stacking them into a 2px line. */
+  margin-top: -1px;
 }
 
 .voices__head {
@@ -1243,9 +1249,10 @@ main > .hero:first-child {
    `border: 0` reset cannot cancel them.
 
    One divider between cells: the band's left rule already closes the first, so
-   a border-left on every cell would double up against it. Top and bottom belong
-   to the cells rather than the row, so the band ends with the last arrow and the
-   trailing spacer stays open. */
+   a border-left on every cell would double up against it. The top rule sits on
+   the cells rather than the row, so it ends with the last arrow and the trailing
+   spacer stays open. There is no bottom rule here — the section's own
+   full-width border closes the band, and a second one would stack against it. */
 .testimonial__controls > * + * {
   border-left: var(--hairline);
 }
@@ -1253,7 +1260,6 @@ main > .hero:first-child {
 .testimonial__progress,
 .testimonial__btn {
   border-top: var(--hairline);
-  border-bottom: var(--hairline);
 }
 
 /* Only once the script confirms it is running does the viewport become a
