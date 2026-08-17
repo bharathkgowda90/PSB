@@ -1049,6 +1049,11 @@ main > .hero:first-child {
 .section--voices {
   --rail: clamp(2rem, 8vw, 12rem);
   --rail-gap: clamp(1.5rem, 6vw, 4rem);
+
+  /* The section's own top padding is handed to the heading cell instead, so the
+     rule starts at the section's top edge and meets the section above it rather
+     than beginning partway down in mid-air. */
+  padding-top: 0;
 }
 
 .voices__head {
@@ -1057,7 +1062,7 @@ main > .hero:first-child {
 }
 
 .voices__intro {
-  padding-bottom: var(--section-pad);
+  padding-block: var(--section-pad);
   grid-column: 2;
   padding-inline: var(--rail-gap) var(--gutter);
   border-bottom: var(--hairline);
@@ -1178,15 +1183,20 @@ main > .hero:first-child {
 .testimonial__controls {
   display: flex;
   align-items: stretch;
-  border-top: var(--hairline);
-  border-bottom: var(--hairline);
   border-left: var(--hairline);
   grid-area: 2 / 2 / 3 / 3;
 }
 
+/* An empty cell holds the arrows off the right edge instead of letting them sit
+   hard against it. */
+.testimonial__spacer {
+  flex: 0 0 clamp(2rem, 16vw, 200px);
+}
+
+/* No height of its own: it stretches to the arrows beside it, so the band's top
+   and bottom rules run straight rather than stepping at the first divider. */
 .testimonial__progress {
   display: none;
-  height: 3rem;
   background: var(--wash);
 }
 
@@ -1210,7 +1220,6 @@ main > .hero:first-child {
   flex: 1;
   min-height: 3.5rem;
   border: 0;
-  border-left: var(--hairline);
   background: transparent;
   cursor: pointer;
   font-size: 1.1rem;
@@ -1228,6 +1237,23 @@ main > .hero:first-child {
     width: 3.75rem;
     flex: 0 0 3.75rem;
   }
+}
+
+/* The band's rules, declared after the cells themselves so the button's own
+   `border: 0` reset cannot cancel them.
+
+   One divider between cells: the band's left rule already closes the first, so
+   a border-left on every cell would double up against it. Top and bottom belong
+   to the cells rather than the row, so the band ends with the last arrow and the
+   trailing spacer stays open. */
+.testimonial__controls > * + * {
+  border-left: var(--hairline);
+}
+
+.testimonial__progress,
+.testimonial__btn {
+  border-top: var(--hairline);
+  border-bottom: var(--hairline);
 }
 
 /* Only once the script confirms it is running does the viewport become a
@@ -1316,9 +1342,18 @@ main > .hero:first-child {
    15. SPLIT — copy beside a full-height photo.
    -------------------------------------------------------------------------- */
 
+/* Full-bleed by design — the photograph runs to the right edge — but the copy
+   still belongs to the page grid, so it is inset to the same left edge as
+   .wrap and .container content rather than to the viewport edge. Above 90rem
+   those two stop being the same thing, and the heading drifted left of every
+   other heading on the page.
+
+   cqw, not vw: it measures this section's own box, so it excludes the scrollbar.
+   Below 90rem the max() floors it back to the plain gutter. */
 .split {
   display: grid;
   border-block: var(--hairline);
+  container-type: inline-size;
   grid-template-columns: 1fr 1fr;
 }
 
@@ -1327,9 +1362,10 @@ main > .hero:first-child {
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  padding: var(--section-pad) var(--gutter);
+  padding-block: var(--section-pad);
   border-right: var(--hairline);
   gap: 0.5rem;
+  padding-inline: max(var(--gutter), calc((100cqw - 90rem) / 2 + var(--gutter))) var(--gutter);
 }
 
 .split__media {
