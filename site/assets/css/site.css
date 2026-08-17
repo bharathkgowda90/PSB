@@ -1249,16 +1249,16 @@ main > .hero:first-child {
    `border: 0` reset cannot cancel them.
 
    One divider between cells: the band's left rule already closes the first, so
-   a border-left on every cell would double up against it. The top rule sits on
-   the cells rather than the row, so it ends with the last arrow and the trailing
-   spacer stays open. There is no bottom rule here — the section's own
-   full-width border closes the band, and a second one would stack against it. */
+   a border-left on every cell would double up against it. The top rule is on
+   every cell, spacer included, so it runs the width of the band and meets the
+   section's own rule at the right edge. There is no bottom rule here — the
+   section's full-width border closes the band, and a second one would stack
+   against it. */
 .testimonial__controls > * + * {
   border-left: var(--hairline);
 }
 
-.testimonial__progress,
-.testimonial__btn {
+.testimonial__controls > * {
   border-top: var(--hairline);
 }
 
