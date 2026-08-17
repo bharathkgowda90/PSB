@@ -1039,6 +1039,12 @@ main > .hero:first-child {
    -------------------------------------------------------------------------- */
 
 .testimonial {
+  /* The colour rail is a column in its own right: it is closed by a rule, and
+     the content clears both the rail and a gap, rather than starting hard
+     against the colour. --rail-gap is what reads as the left margin. */
+  --rail: clamp(2rem, 8vw, 12rem);
+  --rail-gap: clamp(1.5rem, 6vw, 4rem);
+
   position: relative;
   padding-block: 0;
 }
@@ -1048,8 +1054,9 @@ main > .hero:first-child {
   z-index: -1;
   top: 0;
   left: 0;
-  width: clamp(2rem, 12vw, 18rem);
+  width: var(--rail);
   height: 100%;
+  border-right: var(--hairline);
   background: var(--green);
 }
 
@@ -1057,7 +1064,7 @@ main > .hero:first-child {
   max-width: 90rem;
   padding-block: var(--section-pad);
   margin-inline: auto;
-  padding-left: clamp(2rem, 12vw, 18rem);
+  padding-left: calc(var(--rail) + var(--rail-gap));
   padding-right: var(--gutter);
 }
 
@@ -1147,8 +1154,9 @@ main > .hero:first-child {
   align-items: stretch;
   margin-inline: auto;
   margin-top: var(--section-pad);
-  padding-left: clamp(2rem, 12vw, 18rem);
+  padding-left: var(--rail);
   border-top: var(--hairline);
+  border-bottom: var(--hairline);
 }
 
 .testimonial__progress {

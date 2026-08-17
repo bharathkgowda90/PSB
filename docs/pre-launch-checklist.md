@@ -22,6 +22,7 @@ grep -rn "To be supplied\|To be confirmed\|TODO\|SAMPLE DATA" site/_pages site/_
 | 5 | **Confirm the email address** | throughout | `psb@gmail.com` is almost certainly not a real inbox — that address would have been registered years ago. Verify it or replace it. |
 | 6 | **Real photographs, with consent** | `site/assets/img/_raw/` | Only generated placeholders exist. No photograph of an identifiable child may be published without written consent from that child's family. See the note below on the supplied image set. |
 | 7 | **Verify the recognition number** | `site/_pages/disclosure.html`, footer | `29220204201` is published as fact on the disclosure page. Confirm it is correct and current. |
+| 8 | **Replace the invented parent quotes** | `site/_pages/home.html` | All five testimonials in the "What families say" carousel are written, along with the names and the child's class. No parent said any of them. The on-page warning card was removed at the client's request for design reasons, so nothing on the site now signals that these are samples — a visitor reads them as real. Replace each with a parent's own words, obtained with written permission, or delete the section. |
 
 ---
 
