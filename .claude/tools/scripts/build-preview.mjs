@@ -161,6 +161,13 @@ ${inlinedCss}
         text-align: center;
       }
       .preview-bar strong { color: var(--yellow); }
+      /* The open menu pins the site header to the top of the viewport, which in
+         the real site is the top of the page. Here the preview bar occupies
+         that space, so the header — and its close button — would slide under
+         it and stop being clickable. Measured at runtime, since the bar's
+         height depends on how far its text wraps. */
+      body.nav-open .site-header { top: var(--preview-bar-h, 0px); }
+      body.nav-open .primary-nav { padding-top: calc(var(--nav-h) + var(--preview-bar-h, 0px) + var(--gutter) * 2); }
       .preview-bar select {
         max-width: 100%;
         padding: 0.2rem 0.4rem;
@@ -208,6 +215,18 @@ ${siteJs}
         var h = location.hash.replace(/^#/, "");
         return PAGES[h] ? h : "/";
       }
+
+      // Preview-only: publish the bar's height so the pinned header can clear it.
+      function measureBar() {
+        var bar = document.querySelector(".preview-bar");
+        if (!bar) return;
+        document.documentElement.style.setProperty(
+          "--preview-bar-h",
+          Math.round(bar.getBoundingClientRect().height) + "px",
+        );
+      }
+      measureBar();
+      window.addEventListener("resize", measureBar);
 
       function render() {
         var route = routeFromHash();

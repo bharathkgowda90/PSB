@@ -522,6 +522,18 @@ strong {
   }
 }
 
+/* While the panel is open the header has to stay on top of it and stay on
+   screen: the sheet is fixed to the viewport, but the header is in normal flow,
+   so on a page scrolled halfway down it would otherwise sit far above the
+   sheet and take the close button with it. Fixed and above, the same bar the
+   menu was opened from is the bar it is closed from. */
+body.nav-open .site-header {
+  position: fixed;
+  z-index: 130;
+  top: 0;
+  left: 0;
+}
+
 /* The menu panel. Full-bleed sheet, opened from the nav box. */
 .primary-nav {
   position: fixed;
@@ -1153,28 +1165,103 @@ main > .hero:first-child {
 }
 
 /* -----------------------------------------------------------------------------
-   13c. PURSUITS — the co-curricular index, six doors into Student Life.
-   Explicit column counts rather than auto-fit: six items want 3 + 3, and
-   auto-fit resolves to four at desktop and orphans two.
+   13c. RAIL — a horizontally scrolled row of cards, used by the
+   co-curricular index. Percentage track columns rather than fixed widths so
+   a card and a sliver of the next are always visible, which is what tells a
+   reader there is more to the right without a scrollbar to say so.
    -------------------------------------------------------------------------- */
 
-.pursuits {
-  display: grid;
-  gap: var(--col-gap);
-  grid-template-columns: minmax(0, 1fr);
+.rail {
   margin-top: 2.5rem;
 }
 
+/* Native overflow scrolling does the work, so the track is swipeable and
+   keyboard-scrollable whether or not the script runs; the arrows are the
+   enhancement on top and stay hidden until it does. */
+.rail__viewport {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.rail__viewport::-webkit-scrollbar {
+  display: none;
+}
+
+/* Flex, not grid. A percentage in grid-auto-columns resolves against the grid
+   container's own inline size, which inside a horizontal scroller is itself
+   derived from the columns — circular, and Chromium settles it at about 38px a
+   card. A flex container takes its width from its containing block first, so
+   flex-basis has something real to be a percentage of. */
+.rail__track {
+  display: flex;
+  padding: 0;
+  gap: var(--col-gap);
+  list-style: none;
+  margin-block: 0;
+}
+
+.rail__item {
+  display: flex;
+  flex: 0 0 82%;
+  scroll-snap-align: start;
+}
+
 @media (width >= 40rem) {
-  .pursuits {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .rail__item {
+    flex-basis: 46%;
   }
 }
 
 @media (width >= 64rem) {
-  .pursuits {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  .rail__item {
+    flex-basis: 31%;
   }
+}
+
+.rail__item > .card {
+  width: 100%;
+}
+
+.rail__controls {
+  display: none;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+.js-rail .rail__controls {
+  display: flex;
+}
+
+.rail__btn {
+  display: grid;
+  width: 3.75rem;
+  min-height: 3.5rem;
+  border: var(--hairline);
+  background: transparent;
+  cursor: pointer;
+  font-size: 1.1rem;
+  place-items: center;
+  transition:
+    background-color var(--dur-fast) ease,
+    opacity var(--dur-fast) ease;
+}
+
+.rail__btn + .rail__btn {
+  border-left: 0;
+}
+
+.rail__btn:hover:not([disabled]) {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* Disabled rather than hidden: the pair keeps its position at both ends, so
+   the control does not jump sideways as you reach the last card. */
+.rail__btn[disabled] {
+  cursor: default;
+  opacity: 0.3;
 }
 
 /* -----------------------------------------------------------------------------

@@ -26,10 +26,17 @@
   var footer = document.querySelector(".site-footer");
 
   if (toggle && nav) {
+    var toggleLabel = toggle.querySelector(".visually-hidden");
+
     var setOpen = function (open) {
       toggle.setAttribute("aria-expanded", String(open));
       nav.classList.toggle("is-open", open);
+      // The header has to sit above the sheet and stay pinned while it is open;
+      // CSS keys off this class rather than off the panel, which is a sibling.
+      document.body.classList.toggle("nav-open", open);
       document.body.style.overflow = open ? "hidden" : "";
+      // The same button closes the panel, so its name has to say so.
+      if (toggleLabel) toggleLabel.textContent = open ? "Close menu" : "Menu";
 
       [main, footer].forEach(function (el) {
         if (!el) return;
@@ -213,6 +220,63 @@
       fitHeight();
       // Images arrive after first paint and change the measurement.
       window.addEventListener("load", fitHeight);
+    });
+
+    /* ---------------------------------------------------------------- Rail
+
+       A horizontally scrolled row of cards. The scrolling itself is native, so
+       the row is swipeable and keyboard-scrollable with this script blocked;
+       all the script adds is a pair of arrows, which stay hidden in CSS until
+       it runs. */
+
+    scope.querySelectorAll("[data-rail]").forEach(function (root) {
+      if (root.dataset.railWired) return;
+      root.dataset.railWired = "1";
+
+      var viewport = root.querySelector(".rail__viewport");
+      var track = root.querySelector(".rail__track");
+      if (!viewport || !track || track.children.length < 2) return;
+
+      var prev = root.querySelector("[data-rail-prev]");
+      var next = root.querySelector("[data-rail-next]");
+
+      document.documentElement.classList.add("js-rail");
+
+      // Measured rather than assumed: the card width is a percentage of the
+      // viewport and changes at every breakpoint.
+      function step() {
+        var first = track.children[0];
+        var gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+        return first.getBoundingClientRect().width + gap;
+      }
+
+      function sync() {
+        var max = viewport.scrollWidth - viewport.clientWidth;
+        // Sub-pixel scroll positions mean an exact comparison never fires at
+        // the ends, so both edges get a pixel of tolerance.
+        if (prev) prev.disabled = viewport.scrollLeft <= 1;
+        if (next) next.disabled = viewport.scrollLeft >= max - 1;
+      }
+
+      function go(direction) {
+        viewport.scrollBy({
+          left: direction * step(),
+          behavior: reduced.matches ? "auto" : "smooth",
+        });
+      }
+
+      if (prev)
+        prev.addEventListener("click", function () {
+          go(-1);
+        });
+      if (next)
+        next.addEventListener("click", function () {
+          go(1);
+        });
+
+      viewport.addEventListener("scroll", sync, { passive: true });
+      window.addEventListener("resize", sync);
+      sync();
     });
 
     /* ----------------------------------------------------------- Map facade
