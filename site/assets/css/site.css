@@ -1021,6 +1021,163 @@ main > .hero:first-child {
 }
 
 /* -----------------------------------------------------------------------------
+   13a. TENETS — five short commitments, ruled off from one another.
+   Deliberately not the .pillar treatment used by the four stages above: these
+   carry no photograph and no link, so they are a set of statements rather than
+   a set of doors.
+   -------------------------------------------------------------------------- */
+
+.tenets {
+  display: grid;
+  padding: 0;
+  border-top: var(--hairline);
+  gap: 0;
+  grid-template-columns: minmax(0, 1fr);
+  list-style: none;
+  margin-block: 3rem 0;
+}
+
+@media (width >= 48rem) {
+  .tenets {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Five across only once each column can still hold a readable line. Below that
+   two columns leave the fifth on its own, which reads as the end of a list
+   rather than as a gap. */
+@media (width >= 78rem) {
+  .tenets {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+.tenet {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem var(--col-gap) 1.75rem 0;
+  border-bottom: var(--hairline);
+  gap: 0.4rem;
+}
+
+/* The divider between columns, never before the first in a row. Drawn on the
+   cell rather than as a gap so the rules meet the top and bottom rules. */
+@media (width >= 48rem) {
+  .tenet {
+    padding-left: var(--col-gap);
+    border-left: var(--hairline);
+  }
+
+  .tenet:nth-child(odd) {
+    padding-left: 0;
+    border-left: 0;
+  }
+}
+
+@media (width >= 78rem) {
+  .tenet {
+    padding-left: var(--col-gap);
+    border-left: var(--hairline);
+  }
+
+  .tenet:nth-child(odd) {
+    padding-left: var(--col-gap);
+    border-left: var(--hairline);
+  }
+
+  .tenet:first-child {
+    padding-left: 0;
+    border-left: 0;
+  }
+}
+
+.tenet__no {
+  margin-bottom: 0.75rem;
+  font-size: var(--fs-fine);
+  letter-spacing: 0.12em;
+}
+
+/* Colour is structural here and never type colour: a block above the numeral
+   rather than a tinted numeral. Tinting failed 1.4.3 outright — blue on white
+   at 13px measures 3.89:1 against the 4.5:1 it needs, orange 2.82:1. */
+.tenet__no::before {
+  display: block;
+  width: 1.75rem;
+  height: 0.375rem;
+  margin-bottom: 0.75rem;
+  background: var(--yellow);
+  content: "";
+}
+
+.tenet:nth-child(2) .tenet__no::before {
+  background: var(--blue);
+}
+
+.tenet:nth-child(3) .tenet__no::before {
+  background: var(--orange);
+}
+
+.tenet:nth-child(4) .tenet__no::before {
+  background: var(--green);
+}
+
+.tenet:nth-child(5) .tenet__no::before {
+  background: var(--ink);
+}
+
+.tenet__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: var(--wt-display);
+  line-height: var(--lh-tight);
+}
+
+/* Full body size on a phone, where each tenet has the width for it. Only the
+   five-column layout drops to fine, and only because 240px of column would
+   otherwise break a 16px line at about four words. */
+.tenet p {
+  margin: 0;
+}
+
+@media (width >= 78rem) {
+  .tenet p {
+    font-size: var(--fs-fine);
+  }
+
+  /* Reserve two lines for the title across the row. One of the five wraps and
+     the other four do not, which otherwise steps the body copy out of line. */
+  .tenet__title {
+    min-height: calc(2em * var(--lh-tight));
+  }
+}
+
+/* -----------------------------------------------------------------------------
+   13c. PURSUITS — the co-curricular index, six doors into Student Life.
+   Explicit column counts rather than auto-fit: six items want 3 + 3, and
+   auto-fit resolves to four at desktop and orphans two.
+   -------------------------------------------------------------------------- */
+
+.pursuits {
+  display: grid;
+  gap: var(--col-gap);
+  grid-template-columns: minmax(0, 1fr);
+  margin-top: 2.5rem;
+}
+
+@media (width >= 40rem) {
+  .pursuits {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (width >= 64rem) {
+  .pursuits {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* -----------------------------------------------------------------------------
    13b. TESTIMONIAL CAROUSEL
    Colour block bleeding off the left edge, portrait, quote, then a progress
    bar and a pair of stepper buttons. Without JavaScript every quote is simply

@@ -23,6 +23,16 @@ grep -rn "To be supplied\|To be confirmed\|TODO\|SAMPLE DATA" site/_pages site/_
 | 6 | **Real photographs, with consent** | `site/assets/img/_raw/` | Only generated placeholders exist. No photograph of an identifiable child may be published without written consent from that child's family. See the note below on the supplied image set. |
 | 7 | **Verify the recognition number** | `site/_pages/disclosure.html`, footer | `29220204201` is published as fact on the disclosure page. Confirm it is correct and current. |
 | 8 | **Replace the invented parent quotes** | `site/_pages/home.html` | All five testimonials in the "What families say" carousel are written, along with the names and the child's class. No parent said any of them. The on-page warning card was removed at the client's request for design reasons, so nothing on the site now signals that these are samples — a visitor reads them as real. Replace each with a parent's own words, obtained with written permission, or delete the section. |
+| 9 | **Approve or rewrite the five tenets** | `site/_pages/home.html` | The "What we stand for" section states five commitments in the school's voice. Four restate things the site already says (small classes, English medium, society-run since 2002, visitors welcome in working hours); the fifth — telling families early when a child is slipping — was written to fill the set and nobody at the school has agreed to it. A promise published on the school's own homepage is one parents will hold it to. Someone with authority must approve the wording or replace it. |
+
+**On the "Beyond the lessons" cards (homepage section 04)**
+
+The six cards are navigation into `student-life.html`, not claims. Each says what
+that page will answer rather than asserting what the school offers, because the
+Student Life page itself still carries "To be supplied" against sports, arts,
+clubs and excursions. Once those gaps are filled the card copy can become
+specific — and should, since a card that describes a page rather than the school
+is weaker than one that names a real activity.
 
 ---
 
