@@ -228,6 +228,7 @@ picture {
 /* Slots that crop with object-fit need the picture to carry the box height. */
 .testimonial__portrait picture,
 .pillar__media picture,
+.tenet__media picture,
 .prop-row__media picture,
 .split__media picture,
 .card > picture {
@@ -1070,12 +1071,38 @@ main > .hero:first-child {
   background: var(--ink);
 }
 
+/* The same arrangement the four stages use: the photograph sits top-right
+   beside the numeral only, and the title and body run the full width beneath
+   it. Splitting the cell into text and image columns instead would have cut
+   the measure back to about 33 characters in the smaller cells, which is the
+   problem the five-column version had. */
 .tenet {
-  display: flex;
-  flex-direction: column;
+  display: grid;
   padding: clamp(1.5rem, 3vw, 2.25rem);
   background: var(--paper);
-  gap: 0.5rem;
+  column-gap: var(--col-gap);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 7rem);
+
+  /* Row 2 is the empty one between the numeral and the title, and it takes all
+     the slack. Cells in a row stretch to the tallest, and with four auto rows
+     the browser shares that slack out between them — which opened a gap under
+     every numeral and under every title. Giving one row the 1fr sends it all
+     to one place, and the words land on the bottom edge of every cell. */
+  grid-template-rows: auto 1fr auto auto;
+}
+
+.tenet__media {
+  overflow: hidden;
+  align-self: start;
+  aspect-ratio: 3 / 4;
+  background: var(--wash);
+  grid-column: 2;
+  grid-row: 1 / span 2;
+}
+
+.tenet__media img {
+  height: 100%;
+  object-fit: cover;
 }
 
 /* Two columns: the lead runs the full width and the other four pair off. */
@@ -1104,6 +1131,10 @@ main > .hero:first-child {
 
   .tenet:nth-child(5) {
     grid-column: 2 / span 2;
+
+    /* It spans two columns like the lead, so a 7rem photograph would sit
+       stranded against the far edge with 600px of nothing beside it. */
+    grid-template-columns: minmax(0, 1fr) minmax(0, 12rem);
   }
 }
 
@@ -1120,8 +1151,8 @@ main > .hero:first-child {
    yellow, the numeral holds the top and the words drop to the bottom, so the
    height reads as intended instead of left over. */
 @media (width >= 64rem) {
-  .tenet--lead .tenet__title {
-    margin-top: auto;
+  .tenet--lead {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 18rem);
   }
 }
 
@@ -1140,10 +1171,11 @@ main > .hero:first-child {
 
 .tenet__no {
   display: block;
-  margin-bottom: 0.5rem;
   font-family: var(--font-display);
   font-size: 1.5rem;
   font-weight: var(--wt-display);
+  grid-column: 1;
+  grid-row: 1;
   line-height: 1;
 }
 
@@ -1176,10 +1208,12 @@ main > .hero:first-child {
 }
 
 .tenet__title {
-  margin: 0;
+  margin: 1.5rem 0 0.5rem;
   font-family: var(--font-display);
   font-size: 1.15rem;
   font-weight: var(--wt-display);
+  grid-column: 1 / -1;
+  grid-row: 3;
   line-height: var(--lh-tight);
 }
 
@@ -1188,6 +1222,8 @@ main > .hero:first-child {
 .tenet p {
   margin: 0;
   max-width: 42ch;
+  grid-column: 1 / -1;
+  grid-row: 4;
 }
 
 /* -----------------------------------------------------------------------------
