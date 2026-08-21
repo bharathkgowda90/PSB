@@ -348,11 +348,23 @@ strong {
   grid-column: 1 / span 8;
 }
 
+/* Both cells end at their own last line. A trailing margin inside a grid cell
+   only pushes the row's bottom edge past the text, and the row's bottom edge is
+   exactly what the note beside the heading aligns to. */
+.col-heading > :last-child,
+.col-aside > :last-child {
+  margin-bottom: 0;
+}
+
 .col-body {
   grid-column: 1 / span 5;
 }
 
+/* The supporting note sits on the heading's bottom edge, not its top: the two
+   read as one line of thought across the page rather than as two columns that
+   happen to start together. Below 48rem they stack and this is a no-op. */
 .col-aside {
+  align-self: end;
   grid-column: 9 / span 4;
 }
 
