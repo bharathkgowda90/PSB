@@ -1116,24 +1116,45 @@ main > .hero:first-child {
   }
 }
 
-/* Three columns. The lead occupies the top-left two-by-two; 02 and 03
-   auto-place down the third column beside it, 04 takes the first free cell on
-   the last row, and 05 is placed explicitly to close it. Nine cells, no gaps. */
+/* Six columns rather than three, so the bottom row can split in half: at
+   thirds it had to be one cell against two. Everything above is unchanged —
+   the lead still takes two thirds and the pair beside it a third each — and
+   every cell is placed explicitly rather than left to auto-placement, which
+   would put 02 and 03 side by side in the top row instead of stacked. */
 @media (width >= 64rem) {
   .tenets {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(6, minmax(0, 1fr));
   }
 
   .tenet--lead {
-    grid-column: 1 / span 2;
+    grid-column: 1 / span 4;
     grid-row: 1 / span 2;
   }
 
-  .tenet:nth-child(5) {
-    grid-column: 2 / span 2;
+  .tenet:nth-child(2) {
+    grid-column: 5 / span 2;
+    grid-row: 1;
+  }
 
-    /* It spans two columns like the lead, so a 7rem photograph would sit
-       stranded against the far edge with 600px of nothing beside it. */
+  .tenet:nth-child(3) {
+    grid-column: 5 / span 2;
+    grid-row: 2;
+  }
+
+  .tenet:nth-child(4) {
+    grid-column: 1 / span 3;
+    grid-row: 3;
+  }
+
+  .tenet:nth-child(5) {
+    grid-column: 4 / span 3;
+    grid-row: 3;
+  }
+
+  /* The photograph scales with the cell it sits in. A 7rem one is right in a
+     third of the page and stranded against the far edge in a half. */
+  .tenet:nth-child(4),
+  .tenet:nth-child(5) {
     grid-template-columns: minmax(0, 1fr) minmax(0, 12rem);
   }
 }
