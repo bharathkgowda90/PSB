@@ -15,7 +15,8 @@
     "build": "node scripts/build-pages.mjs && npm run --silent format && node scripts/build.mjs",
     "pages": "node scripts/build-pages.mjs",
     "preview": "node scripts/build-preview.mjs",
-    "qa": "node scripts/design-qa.mjs"
+    "qa": "node scripts/design-qa.mjs",
+    "spacing": "node scripts/spacing-audit.mjs"
   },
   "devDependencies": {
     "esbuild": "^0.25.0",

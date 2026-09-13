@@ -124,7 +124,21 @@ html {
   --col-gap: 1.25rem;
   --row-gap: 16px;
   --columns: 12;
-  --section-pad: clamp(3rem, 7vw, 6.5rem);
+
+  /* One side of a section. Two adjacent sections make the gap, so what a reader
+     sees between them is twice this: 64 / 84 / 128px at 390 / 768 / 1440.
+
+     The old curve was clamp(3rem, 7vw, 6.5rem), whose floor stayed active all
+     the way to 686px — so a phone and a tablet were 96px and 108px apart, near
+     enough identical, and then desktop lurched to 202px. 202px is 3.6x the
+     56px display size; the eye reads that as a missing section rather than a
+     break. This curve leaves its floor at 582px, so the three sizes are
+     actually three sizes. */
+  --section-pad: clamp(2rem, 5.5vw, 4rem);
+
+  /* A heading to the block it introduces. One value, where there were five
+     ad-hoc ones between 2rem and 3rem, none of them responsive. */
+  --space-block: clamp(1.5rem, 3.5vw, 2.5rem);
   --nav-h: 4.0625rem;
 
   /* Shape */
@@ -281,14 +295,35 @@ strong {
   text-decoration: none;
 }
 
+/* A section's padding is meant to be the whole of the space around it. Margins
+   on the first and last things inside add to it, so two sections with identical
+   rules were coming out anywhere from 219px to 280px apart on desktop — a 61px
+   spread across the 24 interior pages, invisible in the CSS and driven entirely
+   by whether a page happened to open with a bare <h2> or a boxed .notice. */
+.section > .wrap > :first-child,
+.section > .container > :first-child,
+.section > .wrap > :last-child > :first-child,
+.page-head > .wrap > :first-child {
+  margin-top: 0;
+}
+
+.section > .wrap > :last-child,
+.section > .container > :last-child,
+.section > .wrap > :last-child > :last-child,
+.page-head > .wrap > :last-child {
+  margin-bottom: 0;
+}
+
 .section {
   position: relative;
   width: 100%;
   padding-block: var(--section-pad);
 }
 
+/* For a run of sections that belong together, where a full break would read as
+   a change of subject. */
 .section--tight {
-  padding-block: calc(var(--section-pad) * 0.55);
+  padding-block: calc(var(--section-pad) * 0.65);
 }
 
 .section--wash {
@@ -666,7 +701,7 @@ main {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
-  margin-top: 2rem;
+  margin-top: var(--space-block);
 }
 
 /* -----------------------------------------------------------------------------
@@ -883,8 +918,13 @@ main {
    11. PAGE HEAD — the interior-page equivalent of the hero.
    -------------------------------------------------------------------------- */
 
+/* Was calc(--nav-h + --gutter * 2), which came out at 125px on a phone and
+   131px on a desktop — no response to the viewport at all, and on a 390px
+   screen 15% of the height went by before the page said what it was. Tied to
+   the section scale it stays the most generous space on the page without being
+   a fixed slab: 56 / 74 / 112px. */
 .page-head {
-  padding-top: calc(var(--nav-h) + var(--gutter) * 2);
+  padding-top: calc(var(--section-pad) * 1.75);
   padding-bottom: var(--section-pad);
   border-bottom: var(--hairline);
 }
@@ -966,6 +1006,7 @@ main > .hero:first-child {
 
 .pillars {
   display: grid;
+  margin-top: var(--space-block);
   gap: var(--col-gap);
   grid-template-columns: 1fr;
 }
@@ -1065,7 +1106,7 @@ main > .hero:first-child {
   gap: 1px;
   grid-template-columns: minmax(0, 1fr);
   list-style: none;
-  margin-block: 3rem 0;
+  margin-block: var(--space-block) 0;
 
   /* Seen only in the gaps. */
   background: var(--ink);
@@ -1255,7 +1296,7 @@ main > .hero:first-child {
    -------------------------------------------------------------------------- */
 
 .rail {
-  margin-top: 2.5rem;
+  margin-top: var(--space-block);
 }
 
 /* Native overflow scrolling does the work, so the track is swipeable and
@@ -1595,6 +1636,7 @@ main > .hero:first-child {
 .marquee {
   overflow: hidden;
   width: 100%;
+  margin-top: var(--space-block);
   mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
 }
 
